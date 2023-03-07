@@ -3,11 +3,6 @@ public class UserConfigration : BaseConfigrationSettings<User>
 {
     public override void Configure(EntityTypeBuilder<User> builder)
     {
-       /* builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>();
-
-        builder.Property(e => e.Name).IsRequired();
-        builder.Property(e => e.Name).HasMaxLength(10);*/
        base.Configure(builder);
 
         builder.Property( e=> e.Email).IsRequired();
