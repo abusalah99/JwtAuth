@@ -2,7 +2,13 @@
 public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
 {
     private readonly IUserRepository _userRepository;
-    public UserUnitOfWork(IUserRepository repository) : base(repository) => _userRepository = repository;
+    private readonly ILogger<UserUnitOfWork> _logger;
+    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger) 
+        : base(repository,logger)
+    {
+        _logger= logger;
+        _userRepository = repository;
+    } 
 
     public virtual async Task<User> GetUserByMail(string mail) => await _userRepository.GetByMail(mail);
 
@@ -19,8 +25,9 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
             throw new ArgumentException("password must be at least 6 charaters");
 
         user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        user.Role = "User";
 
-        await _userRepository.Add(user);
+        await base.Create(user);
     }
     public override async Task Update(User user)
     {
@@ -34,16 +41,32 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         if (!BCrypt.Net.BCrypt.Verify(user.Password,userFromDb.Password))
             throw new ArgumentException("Worng password");
         
-        await _userRepository.Update(user);
+       await base.Update(user);
     }
 
-    public async Task DeleteUserByMail(string mail)=> await _userRepository.DeleteByMail(mail);
+    public async Task DeleteUserByMail(string mail)
+    {
+        using IDbContextTransaction transaction = await _userRepository.GetTransaction();
+        try
+        {
+            await _userRepository.DeleteByMail(mail);
+        }
+        catch (Exception exception)
+        {
+            transaction.Rollback();
+
+            _logger.LogError(exception.Message);
+        }
+        await transaction.CommitAsync();
+    }
 
     public async Task<User> Login(LoginRequest request)
     {
-        User? userFromDb = await GetUserByMail(request.mail);
+        User? userFromDb = await GetUserByMail(request.Email);
+
         if (userFromDb == null)
             throw new ArgumentException("user was not found");
+
         if(!BCrypt.Net.BCrypt.Verify(request.password,userFromDb.Password))
             throw new ArgumentException("wrong password");
 

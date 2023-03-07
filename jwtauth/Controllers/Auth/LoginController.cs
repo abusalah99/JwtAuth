@@ -1,24 +1,21 @@
-﻿namespace jwtauth.Controllers;
+﻿using Azure.Core;
+using jwtauth.Response;
+
+namespace jwtauth.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class LoginController : ControllerBase
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-    public LoginController(IUserUnitOfWork userUnitOfWork) => _userUnitOfWork = userUnitOfWork;
-    [HttpGet]
-    public async Task<ActionResult<User>> Get() => Ok(await _userUnitOfWork.Read());
+    private readonly IResponse<User> _response;
+    public LoginController(IUserUnitOfWork userUnitOfWork)
+    {
+        _userUnitOfWork = userUnitOfWork;
+        _response = new SuccessResponse<User>();
+    }
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)
-    {
-        try
-        {
-          return Ok(await _userUnitOfWork.Login(request));
-        }
-        catch (Exception exception) 
-        {
-          return BadRequest(exception.Message);   
-        }
-        
-    }
+        => Ok(_response.CreateResponse(await _userUnitOfWork.Login(request)));
+
 }

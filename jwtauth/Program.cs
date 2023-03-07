@@ -18,12 +18,15 @@ builder.Services.AddScoped(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSetting
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
+builder.Services.AddTransient<GlobalRequestHandlerMiddelware>();
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalRequestHandlerMiddelware>();
 
 app.MapControllers();
 

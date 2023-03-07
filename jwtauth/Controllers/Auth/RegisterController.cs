@@ -1,26 +1,24 @@
-﻿namespace jwtauth.Controllers;
+﻿using jwtauth.Response;
+
+namespace jwtauth.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class RegisterController : ControllerBase
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-
-    public RegisterController(IUserUnitOfWork userUnitOfWork) =>_userUnitOfWork = userUnitOfWork;
-    [HttpGet]
-    public async Task<ActionResult<User>> Get() => Ok(await _userUnitOfWork.Read());
-    [HttpPost]
-    public async Task<IActionResult> Post(User user)
+    private readonly IResponse<User> _response;
+    public RegisterController(IUserUnitOfWork userUnitOfWork)
     {
-        try
-        {
-            await _userUnitOfWork.Create(user);
-        }
-        catch(Exception exception) 
-        {
-            return BadRequest(exception.Message);
-        }
-        return Ok(user);
+        _userUnitOfWork = userUnitOfWork;
+        _response = new SuccessResponse<User>();
+    }
+    [HttpPost]
+    public async Task<IActionResult> Post(User user) 
+    {
+        await _userUnitOfWork.Create(user);
+
+        return Ok(_response.CreateResponse(user));
     }
 }
 
