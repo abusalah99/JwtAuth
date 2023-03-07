@@ -1,5 +1,5 @@
 ﻿namespace jwtauth;
-public class BaseConfigrationSettings<TEntity> : BaseConfigration<TEntity> where TEntity : BaseEntitySettings
+public class BaseConfigrationSettings<TEntity> : BaseConfigration<TEntity> , IEntityTypeConfiguration<TEntity> where TEntity : BaseEntitySettings
 {
     public new virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {

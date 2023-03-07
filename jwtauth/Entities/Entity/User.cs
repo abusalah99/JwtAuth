@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public class User : BaseEntitySettings
 {
     public required string Email { get; set; }

@@ -29,7 +29,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public virtual async Task<IEnumerable<TEntity>> Get() => await dbSet.ToListAsync();
 
-    public virtual async Task<TEntity> Get(Guid id) => await dbSet.FirstOrDefaultAsync(e => e.Id == id)?? Activator.CreateInstance<TEntity>();
+    public virtual async Task<TEntity> Get(Guid id) => await dbSet.FirstOrDefaultAsync(e => e.Id == id);
     
     public async Task<IDbContextTransaction> GetTransaction() => await _context.Database.BeginTransactionAsync();
 

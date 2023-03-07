@@ -12,7 +12,7 @@ using jwtauth;
 namespace jwtauth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230305232801_Frist")]
+    [Migration("20230307120443_Frist")]
     partial class Frist
     {
         /// <inheritdoc />
