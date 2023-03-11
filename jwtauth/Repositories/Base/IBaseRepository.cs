@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public interface IBaseRepository<TEntity> where TEntity : BaseEntity 
 {
     Task Add (TEntity entity);

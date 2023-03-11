@@ -1,13 +1,20 @@
-﻿namespace jwtauth;
+﻿using Azure.Core;
+
+namespace jwtauth;
+
 public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
 {
     private readonly IUserRepository _userRepository;
     private readonly ILogger<UserUnitOfWork> _logger;
-    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger) 
-        : base(repository,logger)
+    private readonly IJwtProvider _jwtProvider;
+    private readonly RefreshTokenValidator _refreshTokenValidator;
+    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
+        IJwtProvider jwtProvider , RefreshTokenValidator refreshTokenValidator ) : base(repository,logger)
     {
         _logger= logger;
         _userRepository = repository;
+        _jwtProvider= jwtProvider;
+        _refreshTokenValidator= refreshTokenValidator;
     } 
 
     public virtual async Task<User> GetUserByMail(string mail) => await _userRepository.GetByMail(mail);
@@ -28,20 +35,33 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         user.Role = "User";
 
         await base.Create(user);
+
     }
-    public override async Task Update(User user)
+    public async Task<User> Update(User requestUser , Guid id)
     {
-        if (user == null)
+        if (requestUser == null)
             throw new ArgumentNullException("user was not provided.");
 
-        User? userFromDb = await GetUserByMail(user.Email);
+        User? userFromDb = await _userRepository.Get(id);
         if (userFromDb == null)
-            throw new ArgumentException("user not found");
+            throw new ArgumentException("invaild Token");
 
-        if (!BCrypt.Net.BCrypt.Verify(user.Password,userFromDb.Password))
-            throw new ArgumentException("Worng password");
-        
-       await base.Update(user);
+        User user = new()
+        {
+            Id = userFromDb.Id,
+            Name = requestUser.Name,
+            Password = userFromDb.Password,
+            Email = requestUser.Email,
+            Age = requestUser.Age,
+            Phone = requestUser.Phone,
+            Token = userFromDb.Token,
+            Role = userFromDb.Role,
+            RecordNumber = userFromDb.RecordNumber
+        };
+
+        await Update(user);
+
+        return user;
     }
 
     public async Task DeleteUserByMail(string mail)
@@ -60,7 +80,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         await transaction.CommitAsync();
     }
 
-    public async Task<User> Login(LoginRequest request)
+    public async Task<Token> Login(LoginRequest request)
     {
         User? userFromDb = await GetUserByMail(request.Email);
 
@@ -70,7 +90,91 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         if(!BCrypt.Net.BCrypt.Verify(request.password,userFromDb.Password))
             throw new ArgumentException("wrong password");
 
-        return userFromDb;
+        string refreshToken = _jwtProvider.GenrateRefreshToken();
+        if (userFromDb.Token == null || !_refreshTokenValidator.Validate(userFromDb.Token))
+        {
+            userFromDb.Token = refreshToken;
+            await _userRepository.Update(userFromDb);
+        }
+        
+        Token token = new(){
+           AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
+           RefreshToken= userFromDb.Token,
+        };
+
+        return token;
     }
+    public async Task<Token> Register(User user)
+    {
+        string refreshToken = _jwtProvider.GenrateRefreshToken();
+
+        user.Token = refreshToken;
+
+        await this.Create(user);
+
+        Token token = new()
+        {
+            AccessToken = _jwtProvider.GenrateAccessToken(user),
+            RefreshToken = refreshToken
+        };
+
+        return token;
+    }
+
+    public async Task<Token> Refresh(string refreshToken)
+    {
+        User userFromDb = await _userRepository.GetByToken(refreshToken);
+        if (userFromDb == null)
+            throw new ArgumentException("Invalid Token");
+
+        Token token = new()
+        {
+            AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
+            RefreshToken = refreshToken
+        };
+
+        return token;
+    }
+
+    public async Task Logout(string refreshToken)
+    {
+        User userFromDb = await _userRepository.GetByToken(refreshToken);
+        if (userFromDb == null)
+            throw new ArgumentException("Invalid Token");
+
+        userFromDb.Token = null;
+
+        await _userRepository.Update(userFromDb);
+    }
+
+    public async Task<Token> UpdatePassword(PasswordRequest password, Guid id)
+    {
+        User userFromDb = await _userRepository.Get(id);
+
+        if (userFromDb == null)
+            throw new ArgumentException("User not found");
+
+        if (!BCrypt.Net.BCrypt.Verify(password.Password, userFromDb.Password))
+            throw new ArgumentException("wrong password");
+
+        if (password.NewPassword == null)
+            throw new ArgumentException("new password can not be null");
+
+        string refreshToken = _jwtProvider.GenrateRefreshToken();
+
+        userFromDb.Password = BCrypt.Net.BCrypt.HashPassword(password.NewPassword);
+        userFromDb.Token = refreshToken;
+
+        await _userRepository.Update(userFromDb);
+
+        Token newToken = new()
+        {
+            AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
+            RefreshToken = refreshToken
+        };
+
+        return newToken;
+    }
+
 }
 

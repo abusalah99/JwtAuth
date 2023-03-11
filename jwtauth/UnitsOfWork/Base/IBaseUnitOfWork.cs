@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public interface IBaseUnitOfWork<TEntity> where TEntity:BaseEntity 
 {
     Task Create(TEntity entity);

@@ -1,7 +1,31 @@
 ﻿namespace jwtauth;
-public class ResponseResult<T>
+
+public class ResponseResult<TEntity> 
 {
-    public bool Status { get; set; }
-    public int ErrorNumber { get; set; }
-    public T Response { get; set; }
+    public bool Status { get; private set; }
+    public int ErrorNumber { get; private set; }
+    public TEntity Response { get; private set; }
+
+    public ResponseResult(TEntity entity )
+    {
+        Status = true;
+        ErrorNumber = 200;
+        Response = entity;
+    }
+   
 }
+public class ResponseResult
+{
+    public bool Status { get; private set; }
+    public int ErrorNumber { get; private set; }
+    public string Response { get; private set; }
+    public ResponseResult(Exception exception)
+    {
+        Status = false;
+        ErrorNumber = 500;
+        Response = exception.Message;
+    }
+
+}
+
+

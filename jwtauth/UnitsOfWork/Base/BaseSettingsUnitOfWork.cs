@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿namespace jwtauth;
 
-namespace jwtauth;
 public class BaseSettingsUnitOfWork<TEntity> : BaseUnitOfWork<TEntity>
     ,IBaseSettingsUnitOfWork<TEntity> where TEntity : BaseEntitySettings
 {

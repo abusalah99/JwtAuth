@@ -5,14 +5,19 @@
 public class LoginController : ControllerBase
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-    private readonly IResponse<User> _response;
-    public LoginController(IUserUnitOfWork userUnitOfWork)
+    public LoginController(IUserUnitOfWork userUnitOfWork) => _userUnitOfWork = userUnitOfWork;
+
+    [HttpGet, Authorize(Roles ="User")]
+    public async Task<IActionResult> Get()
     {
-        _userUnitOfWork = userUnitOfWork;
-        _response = new SuccessResponse<User>();
+        ResponseResult<IEnumerable<User>> response = new(await _userUnitOfWork.Read());
+        return Ok(response);
     }
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)
-        => Ok(_response.CreateResponse(await _userUnitOfWork.Login(request)));
+    {
+        ResponseResult<Token> response = new(await _userUnitOfWork.Login(request));
 
+        return Ok(response);
+    }
 }

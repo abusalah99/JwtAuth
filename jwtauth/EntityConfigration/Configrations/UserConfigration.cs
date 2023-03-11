@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public class UserConfigration : BaseConfigrationSettings<User> 
 {
     public override void Configure(EntityTypeBuilder<User> builder)
@@ -11,6 +12,8 @@ public class UserConfigration : BaseConfigrationSettings<User>
         builder.Property(e=>e.Password).IsRequired();
 
         builder.Property(e => e.Role).HasDefaultValue("User").ValueGeneratedOnAdd();
+
+        builder.Property(e => e.Token).HasMaxLength(128);
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
 {
     public UserRepository(ApplicationDbContext context) : base(context) { }
@@ -14,5 +15,7 @@ public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
         await Task.Run(()=>dbSet.Remove(userFromDb));
         await SaveChangesAsync();
     }
+    public async Task<User>? GetByToken(string token)
+      => await dbSet.FirstOrDefaultAsync(e => e.Token == token);
 
 }

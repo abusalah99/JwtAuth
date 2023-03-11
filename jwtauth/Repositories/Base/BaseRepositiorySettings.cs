@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public class BaseRepositiorySettings<TEntity> : BaseRepository<TEntity>
     , IBaseRepositiorySettings<TEntity> where TEntity : BaseEntitySettings
 {

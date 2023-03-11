@@ -1,4 +1,5 @@
 ﻿namespace jwtauth;
+
 public class BaseUnitOfWork<TEntity> : IBaseUnitOfWork<TEntity> where TEntity : BaseEntity
 {
     private readonly IBaseRepository<TEntity> _repository;

@@ -5,18 +5,17 @@
 public class RegisterController : ControllerBase
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-    private readonly IResponse<User> _response;
     public RegisterController(IUserUnitOfWork userUnitOfWork)
-    {
-        _userUnitOfWork = userUnitOfWork;
-        _response = new SuccessResponse<User>();
-    }
+            =>_userUnitOfWork = userUnitOfWork;
+   
     [HttpPost]
     public async Task<IActionResult> Post(User user) 
     {
-        await _userUnitOfWork.Create(user);
+        Token token = await _userUnitOfWork.Register(user);
 
-        return Ok(_response.CreateResponse(user));
+        ResponseResult<Token> response = new(token);
+
+        return Ok(response);
     }
 }
 
