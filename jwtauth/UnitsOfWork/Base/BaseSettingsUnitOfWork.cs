@@ -10,4 +10,5 @@ public class BaseSettingsUnitOfWork<TEntity> : BaseUnitOfWork<TEntity>
 
     public virtual async Task<IEnumerable<TEntity>> Search(string searchText) =>
         await _baseRepositiorySettings.Search(searchText);
+
 }

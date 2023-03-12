@@ -2,5 +2,6 @@
 
 public class BaseEntitySettings : BaseEntity
 {
-    public required string Name { get; set; }    
+    public required string Name { get; set; }   
+    
 }

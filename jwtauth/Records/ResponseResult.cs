@@ -14,11 +14,13 @@ public class ResponseResult<TEntity>
     }
    
 }
+
 public class ResponseResult
 {
     public bool Status { get; private set; }
     public int ErrorNumber { get; private set; }
     public string Response { get; private set; }
+
     public ResponseResult(Exception exception)
     {
         Status = false;

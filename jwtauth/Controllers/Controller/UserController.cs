@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-
-namespace jwtauth.Controllers;
+﻿namespace jwtauth.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -33,6 +31,7 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
+
     [HttpPut , Route("updatepassword"), Authorize]
     public async Task<IActionResult> Put(PasswordRequest requestUser)
     {
@@ -57,6 +56,8 @@ public class UserController : ControllerBase
 
         return Ok(response);
     }
+
     private Guid GetUserId()
         => new( User.FindFirst("sub")?.Value);
+
 }

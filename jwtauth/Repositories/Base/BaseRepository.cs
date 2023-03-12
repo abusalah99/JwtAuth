@@ -57,6 +57,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         if (entityFromDb == null)
             throw new ArgumentNullException($"{nameof(TEntity)} was not found in DB");
     }
+
 }
 
 

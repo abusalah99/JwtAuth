@@ -6,6 +6,7 @@ public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
 
     public async Task<User>? GetByMail(string mail)
         => await dbSet.FirstOrDefaultAsync(e => e.Email == mail);
+
     public async Task DeleteByMail(string mail)
     {
         User? userFromDb = await GetByMail(mail);
@@ -15,6 +16,7 @@ public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
         await Task.Run(()=>dbSet.Remove(userFromDb));
         await SaveChangesAsync();
     }
+
     public async Task<User>? GetByToken(string token)
       => await dbSet.FirstOrDefaultAsync(e => e.Token == token);
 

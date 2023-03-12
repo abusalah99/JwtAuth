@@ -11,7 +11,8 @@ public class RefreshTokenValidator
     {
         TokenValidationParameters validationParameters = new TokenValidationParameters()
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtRefreshOptions.SecretKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_jwtRefreshOptions.SecretKey)),
             ValidateIssuerSigningKey = true,
             ValidateIssuer = false,
             ValidateAudience = false,
@@ -21,7 +22,9 @@ public class RefreshTokenValidator
 
         try
         {
-            tokenHandler.ValidateToken(refreshToken, validationParameters, out SecurityToken validatedToken);
+            tokenHandler.ValidateToken(refreshToken, validationParameters,
+                out SecurityToken validatedToken);
+
             return true;
         }
         catch
@@ -29,4 +32,5 @@ public class RefreshTokenValidator
             return false;
         }
     }
+
 }

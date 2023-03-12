@@ -9,14 +9,16 @@ builder.Services.AddControllers();
  
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-                                                                      .EnableDetailedErrors()
-                                                                      .EnableSensitiveDataLogging()
-                                                                      .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+builder.Services.AddDbContext<ApplicationDbContext>(
+    options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"))
+               .EnableDetailedErrors()
+               .EnableSensitiveDataLogging()
+               .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
 builder.Services.AddOptions();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
 builder.Services.ConfigureOptions<JwtRefreshOptionsSetup>();

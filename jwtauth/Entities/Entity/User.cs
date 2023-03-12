@@ -9,4 +9,5 @@ public class User : BaseEntitySettings
     public int RecordNumber { get; set; }
     public string? Role { get; set; }
     public String? Token { get; set; }
+
 }

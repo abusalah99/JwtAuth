@@ -19,4 +19,5 @@ public class BaseController<TEntity> : ControllerBase
 
     [HttpDelete("{id}")]
     public async virtual Task Delete(Guid id) => await _unitOfWork.Delete(id);
+
 }

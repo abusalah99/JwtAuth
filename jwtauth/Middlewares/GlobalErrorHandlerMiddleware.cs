@@ -4,7 +4,8 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
 {
     private readonly ILogger<GlobalErrorHandlerMiddleware> _logger;
 
-    public GlobalErrorHandlerMiddleware(ILogger<GlobalErrorHandlerMiddleware> logger)=> _logger = logger;
+    public GlobalErrorHandlerMiddleware(ILogger<GlobalErrorHandlerMiddleware> logger) 
+        => _logger = logger;
     
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -21,6 +22,7 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
 
             await HandleExceptionAsync(context, result);
         }
+
     }
 
     private async Task HandleExceptionAsync(HttpContext context, ResponseResult result)
@@ -31,4 +33,5 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
         context.Response.StatusCode = 500;
         await context.Response.WriteAsync(response);    
     }
+
 }

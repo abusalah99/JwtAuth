@@ -6,4 +6,5 @@ public class ApplicationDbContext : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) =>
 					modelBuilder.ApplyConfiguration(new UserConfigration());
+
 }

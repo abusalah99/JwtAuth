@@ -1,5 +1,4 @@
-﻿
-namespace jwtauth.Controllers;
+﻿namespace jwtauth.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

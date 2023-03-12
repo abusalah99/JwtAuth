@@ -10,5 +10,6 @@ public interface IUserUnitOfWork : IBaseSettingsUnitOfWork<User>
     Task Logout(string refreshToken);
     Task<User> Update(User user,Guid id);
     Task<Token> UpdatePassword(PasswordRequest password,Guid id);
+
 }
 

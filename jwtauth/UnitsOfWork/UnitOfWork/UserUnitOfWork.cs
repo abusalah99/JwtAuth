@@ -9,7 +9,8 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
     private readonly IJwtProvider _jwtProvider;
     private readonly RefreshTokenValidator _refreshTokenValidator;
     public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
-        IJwtProvider jwtProvider , RefreshTokenValidator refreshTokenValidator ) : base(repository,logger)
+        IJwtProvider jwtProvider , RefreshTokenValidator refreshTokenValidator )
+        : base(repository,logger)
     {
         _logger= logger;
         _userRepository = repository;
@@ -17,7 +18,8 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         _refreshTokenValidator= refreshTokenValidator;
     } 
 
-    public virtual async Task<User> GetUserByMail(string mail) => await _userRepository.GetByMail(mail);
+    public virtual async Task<User> GetUserByMail(string mail) 
+        => await _userRepository.GetByMail(mail);
 
     public override async Task Create(User user)
     {

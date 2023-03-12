@@ -14,4 +14,5 @@ public class OptionSetup<TEntity> : IConfigureOptions<TEntity> where  TEntity : 
 
     public void Configure(TEntity options)
            => _configuration.GetSection(SectionName).Bind(options);
+
 }

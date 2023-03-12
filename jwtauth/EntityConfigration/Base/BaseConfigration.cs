@@ -7,4 +7,5 @@ public class BaseConfigration<TEntity> : IEntityTypeConfiguration<TEntity> where
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Id).HasValueGenerator<GuidValueGenerator>();
     }
+
 }

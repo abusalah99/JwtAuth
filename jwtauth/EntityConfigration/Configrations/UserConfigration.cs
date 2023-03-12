@@ -15,5 +15,4 @@ public class UserConfigration : BaseConfigrationSettings<User>
 
         builder.Property(e => e.Token).HasMaxLength(128);
     }
-
 }
