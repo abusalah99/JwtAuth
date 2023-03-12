@@ -1,7 +1,4 @@
 using jwtauth;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +36,6 @@ builder.Services.AddTransient<RefreshTokenValidator>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
-
 
 app.UseAuthorization();
 
