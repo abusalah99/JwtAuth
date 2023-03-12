@@ -7,7 +7,6 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
     public GlobalErrorHandlerMiddleware(ILogger<GlobalErrorHandlerMiddleware> logger) 
         => _logger = logger;
     
-
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
         try
