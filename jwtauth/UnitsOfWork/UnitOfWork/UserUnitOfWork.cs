@@ -43,6 +43,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         await base.Create(user);
 
     }
+
     public async Task<User> Update(User requestUser, Guid id)
     {
         if (requestUser == null)
