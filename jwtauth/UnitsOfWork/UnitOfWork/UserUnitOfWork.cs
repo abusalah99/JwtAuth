@@ -1,6 +1,4 @@
-﻿using Azure.Core;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 
 public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
 {
@@ -15,7 +13,6 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         IJwtProvider jwtProvider, RefreshTokenValidator refreshTokenValidator,
         IRefreshTokenRepository refreshTokenRepository,
         IOptions<JwtRefreshOptions> jwtRefreshOptions) : base(repository, logger)
-
     {
         _logger = logger;
         _userRepository = repository;
@@ -115,6 +112,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
 
         return token;
     }
+
     public async Task<Token> Register(User user)
     {
         user.Token = CreateNewRefreshToken();
@@ -213,4 +211,3 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         return newRefreshToken;
     } 
 }
-
