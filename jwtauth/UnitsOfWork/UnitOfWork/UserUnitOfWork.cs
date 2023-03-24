@@ -2,23 +2,30 @@
 
 namespace jwtauth;
 
-public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
+public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
 {
     private readonly IUserRepository _userRepository;
     private readonly ILogger<UserUnitOfWork> _logger;
     private readonly IJwtProvider _jwtProvider;
     private readonly RefreshTokenValidator _refreshTokenValidator;
-    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
-        IJwtProvider jwtProvider , RefreshTokenValidator refreshTokenValidator )
-        : base(repository,logger)
-    {
-        _logger= logger;
-        _userRepository = repository;
-        _jwtProvider= jwtProvider;
-        _refreshTokenValidator= refreshTokenValidator;
-    } 
+    private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly JwtRefreshOptions _jwtRefreshOptions;
 
-    public virtual async Task<User> GetUserByMail(string mail) 
+    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
+        IJwtProvider jwtProvider, RefreshTokenValidator refreshTokenValidator,
+        IRefreshTokenRepository refreshTokenRepository,
+        IOptions<JwtRefreshOptions> jwtRefreshOptions) : base(repository, logger)
+
+    {
+        _logger = logger;
+        _userRepository = repository;
+        _jwtProvider = jwtProvider;
+        _refreshTokenValidator = refreshTokenValidator;
+        _refreshTokenRepository = refreshTokenRepository;
+        _jwtRefreshOptions = jwtRefreshOptions.Value;
+    }
+
+    public virtual async Task<User> GetUserByMail(string mail)
         => await _userRepository.GetByMail(mail);
 
     public override async Task Create(User user)
@@ -39,7 +46,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         await base.Create(user);
 
     }
-    public async Task<User> Update(User requestUser , Guid id)
+    public async Task<User> Update(User requestUser, Guid id)
     {
         if (requestUser == null)
             throw new ArgumentNullException("user was not provided.");
@@ -89,35 +96,35 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         if (userFromDb == null)
             throw new ArgumentException("user was not found");
 
-        if(!BCrypt.Net.BCrypt.Verify(request.password,userFromDb.Password))
+        if (!BCrypt.Net.BCrypt.Verify(request.password, userFromDb.Password))
             throw new ArgumentException("wrong password");
 
-        string refreshToken = _jwtProvider.GenrateRefreshToken();
-        if (userFromDb.Token == null || !_refreshTokenValidator.Validate(userFromDb.Token))
+        if (userFromDb.Token == null)
+            userFromDb.Token = CreateNewRefreshToken(userFromDb.Id);
+
+        if(!_refreshTokenValidator.Validate(userFromDb.Token.Value))
+            userFromDb.Token = CreateNewRefreshToken(userFromDb.Id, userFromDb.Token.Id);
+
+        await Update(userFromDb);    
+
+        Token token = new()
         {
-            userFromDb.Token = refreshToken;
-            await _userRepository.Update(userFromDb);
-        }
-        
-        Token token = new(){
-           AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
-           RefreshToken= userFromDb.Token,
+            AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
+            RefreshToken = userFromDb.Token.Value,
         };
 
         return token;
     }
     public async Task<Token> Register(User user)
     {
-        string refreshToken = _jwtProvider.GenrateRefreshToken();
-
-        user.Token = refreshToken;
+        user.Token = CreateNewRefreshToken();
 
         await this.Create(user);
 
         Token token = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(user),
-            RefreshToken = refreshToken
+            RefreshToken = user.Token.Value
         };
 
         return token;
@@ -126,6 +133,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
     public async Task<Token> Refresh(string refreshToken)
     {
         User userFromDb = await _userRepository.GetByToken(refreshToken);
+
         if (userFromDb == null)
             throw new ArgumentException("Invalid Token");
 
@@ -144,9 +152,18 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         if (userFromDb == null)
             throw new ArgumentException("Invalid Token");
 
-        userFromDb.Token = null;
+        using IDbContextTransaction transaction = await _refreshTokenRepository.GetTransaction();
+        try
+        {
+            await _refreshTokenRepository.Remove(userFromDb.Token.Id);
+        }
+        catch (Exception exception)
+        {
+            transaction.Rollback();
 
-        await _userRepository.Update(userFromDb);
+            _logger.LogError(exception.Message);
+        }
+        await transaction.CommitAsync();
     }
 
     public async Task<Token> UpdatePassword(PasswordRequest password, Guid id)
@@ -162,21 +179,38 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User> , IUserUnitOfWork
         if (password.NewPassword == null)
             throw new ArgumentException("new password can not be null");
 
-        string refreshToken = _jwtProvider.GenrateRefreshToken();
+        string refreshTokenValue = _jwtProvider.GenrateRefreshToken();
 
         userFromDb.Password = BCrypt.Net.BCrypt.HashPassword(password.NewPassword);
-        userFromDb.Token = refreshToken;
 
-        await _userRepository.Update(userFromDb);
+        userFromDb.Token = CreateNewRefreshToken(userFromDb.Id, userFromDb.Token.Id);
+
+        await Update(userFromDb);
 
         Token newToken = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
-            RefreshToken = refreshToken
+            RefreshToken = userFromDb.Token.Value
         };
 
         return newToken;
     }
 
+    private RefreshToken CreateNewRefreshToken(Guid userId = default(Guid)
+        ,Guid id = default(Guid))
+    {
+    string refreshToken = _jwtProvider.GenrateRefreshToken();
+
+    RefreshToken newRefreshToken = new()
+    {
+        Id = id,
+        Value = refreshToken,
+        CreatedAt = DateTime.UtcNow,
+        ExpireAt = DateTime.UtcNow.AddMonths(_jwtRefreshOptions.ExpireTimeInMonths),
+        UserId = userId
+    };
+
+        return newRefreshToken;
+    } 
 }
 

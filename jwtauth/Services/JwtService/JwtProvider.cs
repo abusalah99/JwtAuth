@@ -16,9 +16,9 @@ public class JwtProvider : IJwtProvider
     {
         var claims = new List<Claim>()
         {
-            new("Sub", user.Id.ToString()),
+            new("Id", user.Id.ToString()),
             new(JwtRegisteredClaimNames.Name, user.Name),
-            new(ClaimTypes.Role, user.Role)
+            new(ClaimTypes.Role, user.Role),
         };
  
        string token = TokenGenrator(
@@ -26,19 +26,20 @@ public class JwtProvider : IJwtProvider
             claims,
             null,
             null,
-            DateTime.UtcNow.AddHours(1));
+            DateTime.UtcNow.AddMinutes(_jwtAccessOptions.ExpireTimeInMintes));
 
         return token;
     }
 
     public string GenrateRefreshToken()
     {
+
         string token = TokenGenrator(
             _jwtRefreshOptions.SecretKey,
             null,
             null,
             null,
-            DateTime.UtcNow.AddMonths(3));
+            DateTime.UtcNow.AddMonths(_jwtRefreshOptions.ExpireTimeInMonths));
 
         return token;
     }
@@ -56,8 +57,8 @@ public class JwtProvider : IJwtProvider
             SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuser,
-            audience,
+           issuser,
+           audience,
            claims,
            null,
            expireDate,

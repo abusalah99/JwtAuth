@@ -6,13 +6,13 @@ public class UserConfigration : BaseConfigrationSettings<User>
     {
        base.Configure(builder);
 
-        builder.Property( e=> e.Email).IsRequired();
-        builder.HasAlternateKey(e => e.Email);
+        builder.Property(e => e.Email).IsRequired();
+        builder.HasIndex(e => e.Email).IsUnique();
 
-        builder.Property(e=>e.Password).IsRequired();
+        builder.Property(e => e.Password).IsRequired();
 
         builder.Property(e => e.Role).HasDefaultValue("User").ValueGeneratedOnAdd();
 
-        builder.Property(e => e.Token).HasMaxLength(128);
+        builder.HasOne(e => e.Token).WithOne(e => e.User).HasForeignKey<RefreshToken>(e=>e.UserId);
     }
 }

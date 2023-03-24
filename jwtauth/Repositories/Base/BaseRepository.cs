@@ -51,7 +51,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
             throw new ArgumentNullException($"{nameof(TEntity)} was not provided.");   
     }
 
-    private async Task ThrowExceptionIfIfEntityExistsInDatabase(TEntity entity)
+    protected async Task ThrowExceptionIfIfEntityExistsInDatabase(TEntity entity)
     {
         TEntity? entityFromDb = await Get(entity.Id);
         if (entityFromDb == null)

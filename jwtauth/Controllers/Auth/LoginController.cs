@@ -16,8 +16,15 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        ResponseResult<Token> response = new(await _userUnitOfWork.Login(request));
+        Token token = await _userUnitOfWork.Login(request);
 
+        ResponseResult<Token> response = new(token);
+
+    /*    var authorizationCookieOptions = new CookieOptions()
+        {
+            HttpOnly = true,
+            Expires = 
+        };*/
         return Ok(response);
     }
 

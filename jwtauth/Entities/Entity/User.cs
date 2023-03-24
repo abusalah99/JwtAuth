@@ -8,6 +8,5 @@ public class User : BaseEntitySettings
     public string? Phone { get; set; }
     public int RecordNumber { get; set; }
     public string? Role { get; set; }
-    public String? Token { get; set; }
-
+    public RefreshToken? Token { get; set; }
 }

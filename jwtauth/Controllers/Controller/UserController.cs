@@ -58,6 +58,5 @@ public class UserController : ControllerBase
     }
 
     private Guid GetUserId()
-        => new( User.FindFirst("sub")?.Value);
-
+        => new( User.FindFirst("Id")?.Value);
 }
