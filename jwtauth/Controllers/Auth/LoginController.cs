@@ -2,11 +2,12 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class LoginController : ControllerBase
+public class LoginController : AuthBaseController
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-    public LoginController(IUserUnitOfWork userUnitOfWork) => _userUnitOfWork = userUnitOfWork;
-
+    public LoginController(IUserUnitOfWork userUnitOfWork) 
+            =>_userUnitOfWork = userUnitOfWork;
+    
     [HttpGet, Authorize(Roles ="User")]
     public async Task<IActionResult> Get()
     {
@@ -20,12 +21,13 @@ public class LoginController : ControllerBase
 
         ResponseResult<Token> response = new(token);
 
-    /*    var authorizationCookieOptions = new CookieOptions()
-        {
-            HttpOnly = true,
-            Expires = 
-        };*/
+        SetCookie("AccessToken",
+            token.AccessToken,
+            token.AccessTokenExpiresAt);
+        SetCookie("RefreshToken",
+            token.RefreshToken,
+            token.RefreshTokenExpiresAtExpires);
+
         return Ok(response);
     }
-
 }

@@ -28,6 +28,7 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
     {
         string response = JsonSerializer.Serialize(result);
 
+    
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = 500;
         await context.Response.WriteAsync(response);    

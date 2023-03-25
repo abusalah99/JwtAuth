@@ -8,11 +8,13 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
     private readonly RefreshTokenValidator _refreshTokenValidator;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly JwtRefreshOptions _jwtRefreshOptions;
+    private readonly JwtAccessOptions _jwtAccessOptions;
 
     public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
         IJwtProvider jwtProvider, RefreshTokenValidator refreshTokenValidator,
         IRefreshTokenRepository refreshTokenRepository,
-        IOptions<JwtRefreshOptions> jwtRefreshOptions) : base(repository, logger)
+        IOptions<JwtRefreshOptions> jwtRefreshOptions, 
+        IOptions<JwtAccessOptions> jwtAccessOptions) : base(repository, logger)
     {
         _logger = logger;
         _userRepository = repository;
@@ -20,6 +22,7 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         _refreshTokenValidator = refreshTokenValidator;
         _refreshTokenRepository = refreshTokenRepository;
         _jwtRefreshOptions = jwtRefreshOptions.Value;
+        _jwtAccessOptions = jwtAccessOptions.Value;
     }
 
     public virtual async Task<User> GetUserByMail(string mail)
@@ -108,7 +111,9 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         Token token = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
+            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_jwtAccessOptions.ExpireTimeInMintes),
             RefreshToken = userFromDb.Token.Value,
+            RefreshTokenExpiresAtExpires = userFromDb.Token.ExpireAt
         };
 
         return token;
@@ -123,7 +128,9 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         Token token = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(user),
-            RefreshToken = user.Token.Value
+            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_jwtAccessOptions.ExpireTimeInMintes),
+            RefreshToken = user.Token.Value,
+            RefreshTokenExpiresAtExpires = user.Token.ExpireAt
         };
 
         return token;
@@ -139,7 +146,9 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         Token token = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
-            RefreshToken = refreshToken
+            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_jwtAccessOptions.ExpireTimeInMintes),
+            RefreshToken = userFromDb.Token.Value,
+            RefreshTokenExpiresAtExpires = userFromDb.Token.ExpireAt
         };
 
         return token;
@@ -171,14 +180,11 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
 
         if (userFromDb == null)
             throw new ArgumentException("User not found");
-
         if (!BCrypt.Net.BCrypt.Verify(password.Password, userFromDb.Password))
             throw new ArgumentException("wrong password");
 
         if (password.NewPassword == null)
             throw new ArgumentException("new password can not be null");
-
-        string refreshTokenValue = _jwtProvider.GenrateRefreshToken();
 
         userFromDb.Password = BCrypt.Net.BCrypt.HashPassword(password.NewPassword);
 
@@ -189,7 +195,9 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         Token newToken = new()
         {
             AccessToken = _jwtProvider.GenrateAccessToken(userFromDb),
-            RefreshToken = userFromDb.Token.Value
+            AccessTokenExpiresAt = DateTime.UtcNow.AddMinutes(_jwtAccessOptions.ExpireTimeInMintes),
+            RefreshToken = userFromDb.Token.Value,
+            RefreshTokenExpiresAtExpires = userFromDb.Token.ExpireAt
         };
 
         return newToken;

@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UserController : AuthBaseController
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
@@ -42,7 +42,14 @@ public class UserController : ControllerBase
 
         ResponseResult<Token> response = new(token);
 
-        return Ok(token);
+        SetCookie("AccessToken",
+        token.AccessToken,
+        token.AccessTokenExpiresAt);
+        SetCookie("RefreshToken",
+            token.RefreshToken,
+            token.RefreshTokenExpiresAtExpires);
+
+        return Ok(response);
     }
 
     [HttpDelete, Authorize]

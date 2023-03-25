@@ -1,4 +1,5 @@
 using jwtauth;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +13,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(
                .EnableDetailedErrors()
                .EnableSensitiveDataLogging()
                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-
 builder.Services.AddOptions();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer()
+ ;
 
 builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
 builder.Services.ConfigureOptions<JwtRefreshOptionsSetup>();

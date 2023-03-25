@@ -7,4 +7,3 @@ public class JwtAccessOptions
     public  string? SecretKey { get; init; }
     public int ExpireTimeInMintes { get; init; }
 }
-

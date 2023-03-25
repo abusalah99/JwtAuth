@@ -27,6 +27,12 @@ public class ResponseResult
         ErrorNumber = 500;
         Response = exception.Message;
     }
+    public ResponseResult(string message)
+    {
+        Status = false;
+        ErrorNumber = 401;
+        Response = message;
+    }
 
 }
 

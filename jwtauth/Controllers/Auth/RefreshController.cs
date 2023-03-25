@@ -1,8 +1,8 @@
-﻿namespace jwtauth.Controller;
+﻿namespace jwtauth.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RefreshController : ControllerBase
+public class RefreshController : AuthBaseController
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
@@ -12,8 +12,19 @@ public class RefreshController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Refresh(Token refreshToken)
     {
-        ResponseResult<Token> response = new(
-            await _userUnitOfWork.Refresh(refreshToken.RefreshToken));
+        string oldToken = refreshToken.RefreshToken
+           ?? Request.Cookies["RefreshToken"] ?? string.Empty;
+
+        Token token = await _userUnitOfWork.Refresh(oldToken);
+
+        ResponseResult<Token> response = new(token);
+
+        SetCookie("AccessToken",
+        token.AccessToken,
+        token.AccessTokenExpiresAt);
+        SetCookie("RefreshToken",
+            token.RefreshToken,
+            token.RefreshTokenExpiresAtExpires);
 
         return Ok(response);
     }

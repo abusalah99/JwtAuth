@@ -23,6 +23,10 @@ public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
     }
 
     public async Task<User>? GetByToken(string token)
-      => await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Token.Value == token);
+    {
+        if (token == null)
+            throw new ArgumentException("Invalid Token");
 
+        return await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Token.Value == token);
+    }
 }

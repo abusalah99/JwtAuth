@@ -1,4 +1,6 @@
-﻿namespace jwtauth.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
+
+namespace jwtauth.Controllers;
 
 public class BaseController<TEntity> : ControllerBase
     where TEntity : BaseEntity
