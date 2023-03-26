@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 
 public class User : BaseEntitySettings
 {
@@ -8,7 +6,6 @@ public class User : BaseEntitySettings
     public string? Password { get; set; }
     public int Age { get; set; }
     public string? Phone { get; set; }
-    public int RecordNumber { get; set; }
     public string? Role { get; set; }
     [JsonIgnore]
     public RefreshToken? Token { get; set; }

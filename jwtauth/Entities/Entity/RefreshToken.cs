@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 public class RefreshToken : BaseEntity
 {
     public required string Value { get; set; } 

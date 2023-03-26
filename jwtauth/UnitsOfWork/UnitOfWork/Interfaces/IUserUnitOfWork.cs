@@ -12,4 +12,3 @@ public interface IUserUnitOfWork : IBaseSettingsUnitOfWork<User>
     Task<Token> UpdatePassword(PasswordRequest password,Guid id);
 
 }
-

@@ -2,12 +2,12 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class LogoutController : AuthBaseController
+public class LogoutController : BaseSettingsController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
-    public LogoutController(IUserUnitOfWork userUnitOfWork)
-            =>_userUnitOfWork = userUnitOfWork;
+    public LogoutController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
+            => _userUnitOfWork = userUnitOfWork;
 
     [HttpPost]
     public async Task<IActionResult> Logout(Token refreshToken)

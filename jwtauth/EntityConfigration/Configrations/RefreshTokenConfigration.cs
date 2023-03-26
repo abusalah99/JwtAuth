@@ -12,4 +12,4 @@ public class RefreshTokenConfigration : BaseConfigration<RefreshToken>
 
         builder.Property(e => e.ExpireAt).IsRequired();
     }
-} 
+}

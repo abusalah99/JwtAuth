@@ -2,25 +2,23 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : AuthBaseController
+public class UserController : BaseSettingsController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
-    public UserController(IUserUnitOfWork userUnitOfWork)
-        =>_userUnitOfWork = userUnitOfWork;
+    public UserController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
+        => _userUnitOfWork = userUnitOfWork;
 
     [HttpGet , Authorize]
-    public async Task<IActionResult> Get()
+    public override async Task<IActionResult> Get()
     {
         Guid userId = GetUserId();
 
-        ResponseResult<User> response = new(await _userUnitOfWork.Read(userId));
-
-        return Ok(response);
+        return await Get(userId);
     }
 
     [HttpPut, Authorize]
-    public async Task<IActionResult> Put(User requestUser)
+    public override async Task<IActionResult> Put(User requestUser)
     {
         Guid id = GetUserId();
 
@@ -57,13 +55,11 @@ public class UserController : AuthBaseController
     {
         Guid userId = GetUserId();
 
-        await _userUnitOfWork.Delete(userId);
+        Response.Cookies.Delete("AccessToken");
+        Response.Cookies.Delete("RefreshToken");
 
-        ResponseResult<string> response = new("user deleted") ;
-
-        return Ok(response);
+        return await Delete(userId);
     }
-
-    private Guid GetUserId()
-        => new( User.FindFirst("Id")?.Value);
+    protected Guid GetUserId()
+    => new(User.FindFirst("Id")?.Value);
 }

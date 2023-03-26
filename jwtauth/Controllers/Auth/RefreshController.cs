@@ -2,12 +2,12 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class RefreshController : AuthBaseController
+public class RefreshController : BaseSettingsController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
-    public RefreshController(IUserUnitOfWork userUnitOfWork)=>
-        _userUnitOfWork = userUnitOfWork;
+    public RefreshController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
+        => _userUnitOfWork = userUnitOfWork;
     
     [HttpPost]
     public async Task<IActionResult> Refresh(Token refreshToken)

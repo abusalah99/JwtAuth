@@ -7,8 +7,12 @@ public class BaseSettingsController<TEntity> : BaseController<TEntity>
     public BaseSettingsController(IBaseSettingsUnitOfWork<TEntity> unitOfWork) : base(unitOfWork) 
         => _baseSettingsUnitOfWork = unitOfWork;
 
-    [HttpGet("Search/{searchText}")]
-    public virtual async Task<IEnumerable<TEntity>> Search([FromRoute] string searchText)
-        => await _baseSettingsUnitOfWork.Search(searchText);
+    public virtual async Task<IActionResult> Search([FromRoute] string searchText)
+    { 
+        IEnumerable<TEntity> entities = await _baseSettingsUnitOfWork.Search(searchText);
 
+        ResponseResult<IEnumerable<TEntity>> response = new(entities);
+
+        return Ok(response);
+    }
 }

@@ -66,7 +66,6 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
             Phone = requestUser.Phone,
             Token = userFromDb.Token,
             Role = userFromDb.Role,
-            RecordNumber = userFromDb.RecordNumber
         };
 
         await Update(user);

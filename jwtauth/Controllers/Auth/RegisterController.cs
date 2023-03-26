@@ -2,11 +2,12 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class RegisterController : AuthBaseController
+
+public class RegisterController : BaseSettingsController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
-    public RegisterController(IUserUnitOfWork userUnitOfWork)
-            =>_userUnitOfWork = userUnitOfWork;
+    public RegisterController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
+            => _userUnitOfWork = userUnitOfWork;
    
     [HttpPost]
     public async Task<IActionResult> Post(User user) 
@@ -26,5 +27,3 @@ public class RegisterController : AuthBaseController
     }
 
 }
-
-

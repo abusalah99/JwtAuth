@@ -48,14 +48,14 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     private static void ThrowExceptionIfParameterNotSupplied(TEntity entity)
     {
         if (entity == null)
-            throw new ArgumentNullException($"{nameof(TEntity)} was not provided.");   
+            throw new ArgumentNullException($"{typeof(TEntity).Name} was not provided.");   
     }
 
     protected async Task ThrowExceptionIfIfEntityExistsInDatabase(TEntity entity)
     {
         TEntity? entityFromDb = await Get(entity.Id);
         if (entityFromDb == null)
-            throw new ArgumentNullException($"{nameof(TEntity)} was not found in DB");
+            throw new ArgumentNullException($"{typeof(TEntity).Name} was not found in DB");
     }
 
 }
