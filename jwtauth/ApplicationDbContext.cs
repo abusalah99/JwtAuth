@@ -8,5 +8,4 @@ public class ApplicationDbContext : DbContext
 				=> modelBuilder.ApplyConfiguration(new UserConfigration())
 								.ApplyConfiguration(new RefreshTokenConfigration())
 								.ApplyConfiguration(new HomeSectionConfigration());
-	
 }

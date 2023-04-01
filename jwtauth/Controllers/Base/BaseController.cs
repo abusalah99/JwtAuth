@@ -10,7 +10,7 @@ public class BaseController<TEntity> : ControllerBase
     {
         await _unitOfWork.Create(entity);
 
-        ResponseResult<string> response = new($"{nameof(TEntity)} created");
+        ResponseResult<string> response = new($"{typeof(TEntity).Name} created");
 
         return Ok(response);
     }

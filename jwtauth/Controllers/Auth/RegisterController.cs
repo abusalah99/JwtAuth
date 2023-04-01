@@ -10,7 +10,7 @@ public class RegisterController : BaseSettingsController<User>
             => _userUnitOfWork = userUnitOfWork;
    
     [HttpPost]
-    public async Task<IActionResult> Post(User user) 
+    public override async Task<IActionResult> Post(User user) 
     {
         Token token = await _userUnitOfWork.Register(user);
 
