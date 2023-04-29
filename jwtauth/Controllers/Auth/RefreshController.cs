@@ -12,7 +12,7 @@ public class RefreshController : BaseSettingsController<User>
     [HttpPost]
     public async Task<IActionResult> Refresh(Token? refreshToken)
     {
-        string oldToken = oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
+        string oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
 
         if (refreshToken != null && refreshToken.RefreshToken != null)
             oldToken = refreshToken.RefreshToken;

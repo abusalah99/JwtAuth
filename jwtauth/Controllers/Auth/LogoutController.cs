@@ -13,10 +13,12 @@ public class LogoutController : BaseSettingsController<User>
     public async Task<IActionResult> Logout(Token refreshToken)
     {
 
-        string token = refreshToken.RefreshToken 
-            ?? Request.Cookies["RefreshToken"]?? string.Empty;
+        string oldToken = oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
 
-        await _userUnitOfWork.Logout(token);
+        if (refreshToken != null && refreshToken.RefreshToken != null)
+            oldToken = refreshToken.RefreshToken;
+
+        await _userUnitOfWork.Logout(oldToken);
 
         ResponseResult<string> response = new("Logout Sccess");
 

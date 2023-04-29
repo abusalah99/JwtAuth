@@ -43,6 +43,8 @@ builder.Services.AddScoped<IFileSaver, FileSaver>();
 builder.Services.AddScoped<ISmsSender,TwilioSmsSender>();
 builder.Services.AddScoped<IMailSender,GmailSmtpMailSender>();
 
+builder.Services.AddScoped<IOTPGenrator,SixRandomDigitOTPGenrator>(); 
+
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();
 
