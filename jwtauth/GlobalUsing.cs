@@ -4,6 +4,7 @@ global using Microsoft.EntityFrameworkCore.ValueGeneration;
 global using Microsoft.EntityFrameworkCore.Storage;
 
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Authorization;
 
 global using System.Text;

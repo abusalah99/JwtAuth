@@ -11,7 +11,7 @@
     <Content Remove="Services\PythonService\Scripts\**" />
     <EmbeddedResource Remove="Services\PythonService\Scripts\**" />
     <None Remove="Services\PythonService\Interpreter\**" />
-   <Compile Remove="Services\PythonService\Interpreter\**" />
+    <Compile Remove="Services\PythonService\Interpreter\**" />
   </ItemGroup>
 
   <ItemGroup>

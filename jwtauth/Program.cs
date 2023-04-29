@@ -15,6 +15,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 builder.Services.AddOptions();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
@@ -63,5 +73,7 @@ app.UseAuthorization();
 app.UseMiddleware<GlobalErrorHandlerMiddleware>();
 
 app.MapControllers();
+
+app.UseCors("AllowAll");
 
 app.Run();
