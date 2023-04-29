@@ -12,6 +12,13 @@ global using System.Text.Json.Serialization;
 
 global using System.Diagnostics;
 
+global using Twilio;
+global using Twilio.Rest.Api.V2010.Account;
+
+global using System.Net.Mail;
+
+global using System.Net;
+
 global using System.IdentityModel.Tokens.Jwt;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
