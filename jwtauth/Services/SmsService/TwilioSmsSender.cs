@@ -1,6 +1,4 @@
-﻿using Twilio;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 
 public class TwilioSmsSender : ISmsSender
 {

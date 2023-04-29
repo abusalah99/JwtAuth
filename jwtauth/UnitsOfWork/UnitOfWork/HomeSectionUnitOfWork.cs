@@ -16,7 +16,7 @@ public class HomeSectionUnitOfWork : BaseSettingsUnitOfWork<HomeSection>, IHomeS
         if (sectionFromDb.Any())
             throw new ArgumentException("This name is already used");
 
-        if (request.Image != null)
+        if (request.Image == null)
             throw new ArgumentException("Image was not supplied");
 
         string path = rootPath + @"\Resources\Images\" + request.Name 

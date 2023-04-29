@@ -9,10 +9,13 @@ public class UserConfigration : BaseConfigrationSettings<User>
         builder.Property(e => e.Email).IsRequired();
         builder.HasIndex(e => e.Email).IsUnique();
 
+        builder.Property(e=>e.LastName).HasMaxLength(10);
+
         builder.Property(e => e.Password).IsRequired();
 
         builder.Property(e => e.Role).HasDefaultValue("User").ValueGeneratedOnAdd();
 
         builder.HasOne(e => e.Token).WithOne(e => e.User).HasForeignKey<RefreshToken>(e=>e.UserId);
+        builder.HasOne(e => e.OTP).WithOne(e => e.User).HasForeignKey<OneTimePassword>(e => e.UserId);
     }
 }

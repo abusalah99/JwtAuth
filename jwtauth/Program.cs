@@ -21,6 +21,9 @@ builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
 builder.Services.ConfigureOptions<JwtRefreshOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
+builder.Services.ConfigureOptions<GmailSmtpOptionsSetup>(); 
+builder.Services.ConfigureOptions<TwilioOptionsSetup>();
+
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseRepositiorySettings<>), typeof(BaseRepositiorySettings<>));
 builder.Services.AddScoped(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
@@ -36,6 +39,9 @@ builder.Services.AddScoped<IRecordResultUnitOfWork, RecordResultUnitOfWork>();
 builder.Services.AddScoped<IPythonScriptExcutor, PythonScriptExcutor>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IFileSaver, FileSaver>();
+
+builder.Services.AddScoped<ISmsSender,TwilioSmsSender>();
+builder.Services.AddScoped<IMailSender,GmailSmtpMailSender>();
 
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();
