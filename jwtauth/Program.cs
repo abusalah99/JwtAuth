@@ -21,7 +21,7 @@ builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
 builder.Services.ConfigureOptions<JwtRefreshOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
-builder.Services.ConfigureOptions<GmailSmtpOptionsSetup>(); 
+builder.Services.ConfigureOptions<GmailSmtpOptionsSetup>();
 builder.Services.ConfigureOptions<TwilioOptionsSetup>();
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -30,7 +30,7 @@ builder.Services.AddScoped(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
 builder.Services.AddScoped(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSettingsUnitOfWork<>));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserUnitOfWork, UserUnitOfWork>(); 
+builder.Services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
 
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
@@ -46,10 +46,10 @@ builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 
 builder.Services.AddScoped<IFileSaver, FileSaver>();
 
-builder.Services.AddScoped<ISmsSender,TwilioSmsSender>();
-builder.Services.AddScoped<IMailSender,GmailSmtpMailSender>();
+builder.Services.AddScoped<ISmsSender, TwilioSmsSender>();
+builder.Services.AddScoped<IMailSender, GmailSmtpMailSender>();
 
-builder.Services.AddScoped<IOTPGenrator,SixRandomDigitOTPGenrator>(); 
+builder.Services.AddScoped<IOTPGenrator, SixRandomDigitOTPGenrator>();
 
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();

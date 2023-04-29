@@ -4,9 +4,9 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
 {
     private readonly ILogger<GlobalErrorHandlerMiddleware> _logger;
 
-    public GlobalErrorHandlerMiddleware(ILogger<GlobalErrorHandlerMiddleware> logger) 
+    public GlobalErrorHandlerMiddleware(ILogger<GlobalErrorHandlerMiddleware> logger)
         => _logger = logger;
-    
+
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
 
@@ -29,10 +29,10 @@ public class GlobalErrorHandlerMiddleware : IMiddleware
     {
         string response = JsonSerializer.Serialize(result);
 
-    
+
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = 500;
-        await context.Response.WriteAsync(response);    
+        await context.Response.WriteAsync(response);
     }
 
 }
