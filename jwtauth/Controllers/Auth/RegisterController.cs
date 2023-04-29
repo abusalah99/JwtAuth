@@ -3,7 +3,7 @@
 [Route("api/[controller]")]
 [ApiController]
 
-public class RegisterController : BaseSettingsController<User>
+public class RegisterController : BaseController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
     public RegisterController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)

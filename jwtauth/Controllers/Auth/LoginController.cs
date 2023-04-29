@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class LoginController : BaseSettingsController<User>
+public class LoginController : BaseController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
     public LoginController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)

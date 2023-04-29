@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class LogoutController : BaseSettingsController<User>
+public class LogoutController : BaseController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 
@@ -13,7 +13,7 @@ public class LogoutController : BaseSettingsController<User>
     public async Task<IActionResult> Logout(Token refreshToken)
     {
 
-        string oldToken = oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
+        string oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
 
         if (refreshToken != null && refreshToken.RefreshToken != null)
             oldToken = refreshToken.RefreshToken;

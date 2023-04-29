@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
+public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 {
     private readonly IUserRepository _userRepository;
     private readonly ILogger<UserUnitOfWork> _logger;
@@ -59,7 +59,8 @@ public class UserUnitOfWork : BaseSettingsUnitOfWork<User>, IUserUnitOfWork
         User user = new()
         {
             Id = userFromDb.Id,
-            Name = requestUser.Name,
+            FristName = requestUser.FristName,
+            LastName = requestUser.LastName,
             Password = userFromDb.Password,
             Email = requestUser.Email,
             Age = requestUser.Age,

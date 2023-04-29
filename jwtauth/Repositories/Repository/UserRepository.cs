@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
     public UserRepository(ApplicationDbContext context) : base(context) { }
 

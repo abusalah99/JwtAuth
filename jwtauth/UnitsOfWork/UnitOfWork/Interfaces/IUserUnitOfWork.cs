@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public interface IUserUnitOfWork : IBaseSettingsUnitOfWork<User>
+public interface IUserUnitOfWork : IBaseUnitOfWork<User>
     {
     Task<User> GetUserByMail(string mail);
     Task DeleteUserByMail(string mail);

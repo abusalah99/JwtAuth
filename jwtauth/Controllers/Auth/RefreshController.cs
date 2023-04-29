@@ -2,7 +2,7 @@
 
 [Route("api/[controller]")]
 [ApiController]
-public class RefreshController : BaseSettingsController<User>
+public class RefreshController : BaseController<User>
 {
     private readonly IUserUnitOfWork _userUnitOfWork;
 

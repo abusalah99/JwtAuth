@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class UserConfigration : BaseConfigrationSettings<User> 
+public class UserConfigration : BaseConfigration<User> 
 {
     public override void Configure(EntityTypeBuilder<User> builder)
     {
@@ -9,7 +9,8 @@ public class UserConfigration : BaseConfigrationSettings<User>
         builder.Property(e => e.Email).IsRequired();
         builder.HasIndex(e => e.Email).IsUnique();
 
-        builder.Property(e=>e.LastName).HasMaxLength(10);
+        builder.Property(e => e.FristName).HasMaxLength(10);
+        builder.Property(e => e.LastName).HasMaxLength(10);
 
         builder.Property(e => e.Password).IsRequired();
 

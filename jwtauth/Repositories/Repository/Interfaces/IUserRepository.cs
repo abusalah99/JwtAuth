@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public interface IUserRepository: IBaseRepositiorySettings<User>
+public interface IUserRepository: IBaseRepository<User>
 {
     Task<User> GetByMail(string mail);
     Task DeleteByMail(string mail);
