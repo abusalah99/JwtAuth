@@ -7,8 +7,8 @@ public class UserRepository : BaseRepositiorySettings<User>, IUserRepository
     public override async Task<User> Get(Guid id)
         => await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Id == id);
     public override async Task<IEnumerable<User>> Get()
-        => await dbSet.Include(e => e.Token).ToListAsync();    
-      
+        => await dbSet.Include(e => e.Token).ToListAsync();
+
     public async Task<User>? GetByMail(string mail)
         => await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Email == mail);
 

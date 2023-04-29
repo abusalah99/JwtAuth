@@ -57,5 +57,7 @@ public class BaseController<TEntity> : ControllerBase
             HttpOnly = true,
             Expires = expireTime
         });
+    protected Guid GetUserId()
+    => new(User.FindFirst("Id")?.Value);
 
 }

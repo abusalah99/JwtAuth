@@ -1,5 +1,4 @@
 using jwtauth;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,10 +12,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(
                .EnableDetailedErrors()
                .EnableSensitiveDataLogging()
                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+
 builder.Services.AddOptions();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer()
- ;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 builder.Services.ConfigureOptions<JwtAccessOptionsSetup>();
 builder.Services.ConfigureOptions<JwtRefreshOptionsSetup>();
@@ -30,9 +29,13 @@ builder.Services.AddScoped(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSetting
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IHomeSectionRepository, HomeSectionRepository>();
+builder.Services.AddScoped<IRecordResultRepository, RecordResultRepository>();
 builder.Services.AddScoped<IHomeSectionUnitOfWork, HomeSectionUnitOfWork>();
 builder.Services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
+builder.Services.AddScoped<IRecordResultUnitOfWork, RecordResultUnitOfWork>();
+builder.Services.AddScoped<IPythonScriptExcutor, PythonScriptExcutor>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddScoped<IFileSaver, FileSaver>();
 
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();

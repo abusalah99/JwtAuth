@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+JwtAuth/jwtauth/Services/PythonService/AiModels/
+JwtAuth/jwtauth/Services/PythonService/Interpreter/
+JwtAuth/jwtauth/Services/PythonService/Scripts/
+/jwtauth/Services/PythonService/Interpreter
+/jwtauth/Services/PythonService/Scripts
+/jwtauth/Services/PythonService/AiModels

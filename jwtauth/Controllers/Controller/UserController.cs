@@ -60,6 +60,5 @@ public class UserController : BaseSettingsController<User>
 
         return await Delete(userId);
     }
-    private Guid GetUserId()
-        => new(User.FindFirst("Id")?.Value);
+
 }

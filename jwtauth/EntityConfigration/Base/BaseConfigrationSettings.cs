@@ -7,7 +7,7 @@ public class BaseConfigrationSettings<TEntity> : BaseConfigration<TEntity> , IEn
         base.Configure(builder);
 
         builder.Property(e => e.Name).IsRequired();
-        builder.Property(e => e.Name).HasMaxLength(10);
+        builder.Property(e => e.Name).HasMaxLength(20);
     }
 
 }

@@ -4,7 +4,8 @@ public class BaseUnitOfWork<TEntity> : IBaseUnitOfWork<TEntity> where TEntity : 
 {
     private readonly IBaseRepository<TEntity> _repository;
     private readonly ILogger<BaseUnitOfWork<TEntity>> _logger;
-    public BaseUnitOfWork(IBaseRepository<TEntity> repository, ILogger<BaseUnitOfWork<TEntity>> logger)
+    public BaseUnitOfWork(IBaseRepository<TEntity> repository,
+        ILogger<BaseUnitOfWork<TEntity>> logger)
     {
         _repository = repository;
         _logger = logger;

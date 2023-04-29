@@ -1,8 +1,8 @@
-﻿namespace jwtauth
+﻿namespace jwtauth;
+
+public class HomeSection : BaseEntitySettings
 {
-    public class HomeSection : BaseEntitySettings
-    {
-        public required byte[] Image { get; set; }
-        public required string SectionText { get; set; } 
-    }
+   public required string IamgePath { get; set; }   
+    public required string SectionText { get; set; } 
+    
 }

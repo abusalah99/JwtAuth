@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\PythonService\Scripts\**" />
+    <Content Remove="Services\PythonService\Scripts\**" />
+    <EmbeddedResource Remove="Services\PythonService\Scripts\**" />
+    <None Remove="Services\PythonService\Interpreter\**" />
+   <Compile Remove="Services\PythonService\Interpreter\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="IronPython" Version="3.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
@@ -22,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Services\IronPythonService\" />
   </ItemGroup>
 
 </Project>

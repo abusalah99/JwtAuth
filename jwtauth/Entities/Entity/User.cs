@@ -9,4 +9,6 @@ public class User : BaseEntitySettings
     public string? Role { get; set; }
     [JsonIgnore]
     public RefreshToken? Token { get; set; }
+    [JsonIgnore]
+    public IEnumerable<RecordResult>? Results { get; set; }
 }

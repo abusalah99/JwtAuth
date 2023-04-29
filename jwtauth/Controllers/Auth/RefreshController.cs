@@ -10,10 +10,12 @@ public class RefreshController : BaseSettingsController<User>
         => _userUnitOfWork = userUnitOfWork;
     
     [HttpPost]
-    public async Task<IActionResult> Refresh(Token refreshToken)
+    public async Task<IActionResult> Refresh(Token? refreshToken)
     {
-        string oldToken = refreshToken.RefreshToken
-           ?? Request.Cookies["RefreshToken"] ?? string.Empty;
+        string oldToken = oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
+
+        if (refreshToken != null && refreshToken.RefreshToken != null)
+            oldToken = refreshToken.RefreshToken;
 
         Token token = await _userUnitOfWork.Refresh(oldToken);
 
