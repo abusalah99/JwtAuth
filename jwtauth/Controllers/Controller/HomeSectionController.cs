@@ -14,7 +14,7 @@
         }
 
         [HttpGet]
-        public override async Task<IActionResult> Get() =>await base.Get();
+        public async Task<IActionResult> Get() =>await Read();
 
         [HttpPost, Authorize(Roles ="Admin")]
         public async Task<IActionResult> Post([FromForm] SectionRequest homeSectionRequest)
@@ -34,7 +34,7 @@
             return Ok(response);
         }
         [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public override async Task<IActionResult> Delete(Guid id)
-            => await base.Delete(id);
+        public async Task<IActionResult> Delete(Guid id)
+            => await Remove(id);
     }
 }

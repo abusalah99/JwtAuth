@@ -6,7 +6,7 @@ public class BaseController<TEntity> : ControllerBase
     private readonly IBaseUnitOfWork<TEntity> _unitOfWork;
     public BaseController(IBaseUnitOfWork<TEntity> unitOfWork) => _unitOfWork = unitOfWork;
 
-    public virtual async Task<IActionResult> Post(TEntity entity)
+    protected virtual async Task<IActionResult> Create(TEntity entity)
     {
         await _unitOfWork.Create(entity);
 
@@ -15,7 +15,7 @@ public class BaseController<TEntity> : ControllerBase
         return Ok(response);
     }
 
-    public virtual async Task<IActionResult> Get()
+    protected virtual async Task<IActionResult> Read()
     {
 
         IEnumerable<TEntity> entities = await _unitOfWork.Read();
@@ -24,7 +24,7 @@ public class BaseController<TEntity> : ControllerBase
 
         return Ok(response);
     }
-    public virtual async Task<IActionResult> Get(Guid id) 
+    protected virtual async Task<IActionResult> Read(Guid id) 
     {
         TEntity entity = await _unitOfWork.Read(id);
 
@@ -33,7 +33,7 @@ public class BaseController<TEntity> : ControllerBase
         return Ok(response);
     }
 
-    public async virtual Task<IActionResult> Put(TEntity entity)
+    protected async virtual Task<IActionResult> Update(TEntity entity)
     {
         await _unitOfWork.Update(entity);
 
@@ -42,7 +42,7 @@ public class BaseController<TEntity> : ControllerBase
         return Ok(response);
     }
 
-    public async virtual Task<IActionResult> Delete(Guid id) 
+    protected async virtual Task<IActionResult> Remove(Guid id) 
     {
         await _unitOfWork.Delete(id);
 

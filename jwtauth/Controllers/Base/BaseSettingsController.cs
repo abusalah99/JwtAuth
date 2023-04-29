@@ -7,7 +7,7 @@ public class BaseSettingsController<TEntity> : BaseController<TEntity>
     public BaseSettingsController(IBaseSettingsUnitOfWork<TEntity> unitOfWork) : base(unitOfWork) 
         => _baseSettingsUnitOfWork = unitOfWork;
 
-    public virtual async Task<IActionResult> Search([FromRoute] string searchText)
+    protected virtual async Task<IActionResult> Search([FromRoute] string searchText)
     { 
         IEnumerable<TEntity> entities = await _baseSettingsUnitOfWork.Search(searchText);
 

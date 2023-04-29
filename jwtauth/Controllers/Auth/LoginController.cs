@@ -9,7 +9,7 @@ public class LoginController : BaseController<User>
             => _userUnitOfWork = userUnitOfWork;
     
     [HttpGet, Authorize(Roles ="User")]
-    public override async Task<IActionResult> Get() => await base.Get();
+    public async Task<IActionResult> Get() => await Read();
 
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)

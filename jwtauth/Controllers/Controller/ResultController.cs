@@ -14,7 +14,7 @@ public class ResultController : BaseSettingsController<RecordResult>
     }
 
     [HttpGet, Authorize]
-    public override async Task<IActionResult> Get()
+    public async Task<IActionResult> Get()
     {
         Guid userId = GetUserId();
         IEnumerable<RecordResult> records = await _unitOfWork.GetRecordsByUserId(userId);
@@ -36,11 +36,11 @@ public class ResultController : BaseSettingsController<RecordResult>
     }
 
     [HttpPut, Authorize]
-    public override async Task<IActionResult> Put(RecordResult entity)
-            => await base.Put(entity);
+    public  async Task<IActionResult> Put(RecordResult entity)
+            => await Update(entity);
 
     [HttpDelete, Authorize]
-    public override async Task<IActionResult> Delete(Guid id)
-            => await base.Delete(id);
+    public async Task<IActionResult> Delete(Guid id)
+            => await Remove(id);
     
 }

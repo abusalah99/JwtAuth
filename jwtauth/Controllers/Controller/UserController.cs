@@ -10,15 +10,15 @@ public class UserController : BaseController<User>
         => _userUnitOfWork = userUnitOfWork;
 
     [HttpGet , Authorize]
-    public override async Task<IActionResult> Get()
+    public async Task<IActionResult> Get()
     {
         Guid userId = GetUserId();
 
-        return await Get(userId);
+        return await Read(userId);
     }
 
     [HttpPut, Authorize]
-    public override async Task<IActionResult> Put(User requestUser)
+    public async Task<IActionResult> Put(User requestUser)
     {
         Guid id = GetUserId();
 
@@ -58,7 +58,7 @@ public class UserController : BaseController<User>
         Response.Cookies.Delete("AccessToken");
         Response.Cookies.Delete("RefreshToken");
 
-        return await Delete(userId);
+        return await Remove(userId);
     }
 
 }
