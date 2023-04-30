@@ -8,7 +8,7 @@ public class LoginController : BaseController<User>
     public LoginController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
             => _userUnitOfWork = userUnitOfWork;
     
-    [HttpGet, Authorize(Roles ="User")]
+    [HttpGet]
     public async Task<IActionResult> Get() => await Read();
 
     [HttpPost]

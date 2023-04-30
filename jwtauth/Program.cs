@@ -50,16 +50,16 @@ builder.Services.AddScoped<IHomeSectionUnitOfWork, HomeSectionUnitOfWork>();
 builder.Services.AddScoped<IRecordResultRepository, RecordResultRepository>();
 builder.Services.AddScoped<IRecordResultUnitOfWork, RecordResultUnitOfWork>();
 
-builder.Services.AddScoped<IPythonScriptExcutor, PythonScriptExcutor>();
+builder.Services.AddSingleton<IPythonScriptExcutor, PythonScriptExcutor>();
 
-builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
 
-builder.Services.AddScoped<IFileSaver, FileSaver>();
+builder.Services.AddSingleton<IFileSaver, FileSaver>();
 
-builder.Services.AddScoped<ISmsSender, TwilioSmsSender>();
-builder.Services.AddScoped<IMailSender, GmailSmtpMailSender>();
+builder.Services.AddSingleton<ISmsSender, TwilioSmsSender>();
+builder.Services.AddSingleton<IMailSender, GmailSmtpMailSender>();
 
-builder.Services.AddScoped<IOTPGenrator, SixRandomDigitOTPGenrator>();
+builder.Services.AddSingleton<IOTPGenrator, SixRandomDigitOTPGenrator>();
 
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();
