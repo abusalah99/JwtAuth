@@ -18,7 +18,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPut, Authorize]
-    public async Task<IActionResult> Put(User requestUser)
+    public async Task<IActionResult> Put(UserRequest requestUser)
     {
         Guid id = GetUserId();
 

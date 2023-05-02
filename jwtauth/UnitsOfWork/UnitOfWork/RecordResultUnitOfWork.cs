@@ -27,7 +27,7 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
 
         IRecordResult result = ResultFactory.GetResult(scriptResult);
 
-        RecordResult recordResult = result.GetResult(userId, rootPath);
+        RecordResult recordResult = result.GetResult(userId);
 
         await Create(recordResult); 
     }

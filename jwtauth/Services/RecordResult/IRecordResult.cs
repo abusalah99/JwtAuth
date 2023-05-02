@@ -2,5 +2,5 @@
 
 public interface IRecordResult 
 {
-    RecordResult GetResult(Guid userId, string rootPath);
+    RecordResult GetResult(Guid userId);
 }

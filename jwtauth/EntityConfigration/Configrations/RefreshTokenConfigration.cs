@@ -11,5 +11,7 @@ public class RefreshTokenConfigration : BaseConfigration<RefreshToken>
         builder.Property(e => e.CreatedAt).IsRequired();
 
         builder.Property(e => e.ExpireAt).IsRequired();
+
+        builder.Property(e => e.CreatedAt).HasDefaultValue(DateTime.UtcNow).ValueGeneratedOnAdd();
     }
 }

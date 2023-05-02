@@ -14,6 +14,8 @@ public class UserConfigration : BaseConfigration<User>
 
         builder.Property(e => e.Password).IsRequired();
 
+        builder.Property(e => e.CreatedAt).HasDefaultValue(DateTime.Now).ValueGeneratedOnAdd();
+
         builder.Property(e => e.Role).HasDefaultValue("User").ValueGeneratedOnAdd();
 
         builder.HasOne(e => e.Token).WithOne(e => e.User).HasForeignKey<RefreshToken>(e=>e.UserId);

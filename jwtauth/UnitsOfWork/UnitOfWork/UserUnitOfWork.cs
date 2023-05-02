@@ -1,4 +1,6 @@
-﻿namespace jwtauth;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace jwtauth;
 
 public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 {
@@ -9,12 +11,14 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly JwtRefreshOptions _jwtRefreshOptions;
     private readonly JwtAccessOptions _jwtAccessOptions;
+    private readonly IImageConverter _imageConverter;
 
     public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
         IJwtProvider jwtProvider, RefreshTokenValidator refreshTokenValidator,
         IRefreshTokenRepository refreshTokenRepository,
         IOptions<JwtRefreshOptions> jwtRefreshOptions, 
-        IOptions<JwtAccessOptions> jwtAccessOptions) : base(repository, logger)
+        IOptions<JwtAccessOptions> jwtAccessOptions,
+        IImageConverter converter) : base(repository, logger)
     {
         _logger = logger;
         _userRepository = repository;
@@ -23,6 +27,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         _refreshTokenRepository = refreshTokenRepository;
         _jwtRefreshOptions = jwtRefreshOptions.Value;
         _jwtAccessOptions = jwtAccessOptions.Value;
+        _imageConverter = converter;
     }
 
     public virtual async Task<User> GetUserByMail(string mail)
@@ -47,7 +52,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     }
 
-    public async Task<User> Update(User requestUser, Guid id)
+    public async Task<User> Update(UserRequest requestUser, Guid id)
     {
         if (requestUser == null)
             throw new ArgumentNullException("user was not provided.");
@@ -55,6 +60,9 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         User? userFromDb = await _userRepository.Get(id);
         if (userFromDb == null)
             throw new ArgumentException("invaild Token");
+
+        string extention = Path.GetExtension(requestUser.UserImage.FileName);        
+        byte[] image = await _imageConverter.ConvertImage(requestUser.UserImage);
 
         User user = new()
         {
@@ -67,6 +75,8 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
             Phone = requestUser.Phone,
             Token = userFromDb.Token,
             Role = userFromDb.Role,
+            ImageExtention = extention,
+            UserImage = image,
         };
 
         await Update(user);

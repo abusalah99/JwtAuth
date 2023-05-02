@@ -11,8 +11,11 @@ public class User : BaseEntity
     public DateTime? MailVerfiedAt { get; set; }
     public bool MailVerification { get;set; }
     public DateTime? MobileVerfiedAt { get; set; }
+    public DateTime CreatedAt { get; set; }    
     public bool MobileVerification { get; set; }
     public string? Role { get; set; }
+    public byte[]? UserImage { get; set; }
+    public string? ImageExtention { get; set; } 
     [JsonIgnore]
     public RefreshToken? Token { get; set; }
     [JsonIgnore]

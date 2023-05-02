@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using jwtauth;
 
@@ -11,9 +12,11 @@ using jwtauth;
 namespace jwtauth.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230430215424_Tenth")]
+    partial class Tenth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +118,7 @@ namespace jwtauth.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 5, 1, 23, 44, 52, 607, DateTimeKind.Utc).AddTicks(4208));
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpireAt")
                         .HasColumnType("datetime2");
@@ -147,11 +148,6 @@ namespace jwtauth.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 5, 2, 2, 44, 52, 606, DateTimeKind.Local).AddTicks(8823));
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -159,9 +155,6 @@ namespace jwtauth.Migrations
                     b.Property<string>("FristName")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("ImageExtention")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(10)
@@ -190,9 +183,6 @@ namespace jwtauth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("User");
-
-                    b.Property<byte[]>("UserImage")
-                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
 

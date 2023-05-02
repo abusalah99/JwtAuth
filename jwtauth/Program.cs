@@ -50,6 +50,8 @@ builder.Services.AddScoped<IHomeSectionUnitOfWork, HomeSectionUnitOfWork>();
 builder.Services.AddScoped<IRecordResultRepository, RecordResultRepository>();
 builder.Services.AddScoped<IRecordResultUnitOfWork, RecordResultUnitOfWork>();
 
+builder.Services.AddScoped<IStatusUnitOfWork, StatusUnitOfWork>();  
+
 builder.Services.AddSingleton<IPythonScriptExcutor, PythonScriptExcutor>();
 
 builder.Services.AddSingleton<IJwtProvider, JwtProvider>();
@@ -60,6 +62,8 @@ builder.Services.AddSingleton<ISmsSender, TwilioSmsSender>();
 builder.Services.AddSingleton<IMailSender, GmailSmtpMailSender>();
 
 builder.Services.AddSingleton<IOTPGenrator, SixRandomDigitOTPGenrator>();
+
+builder.Services.AddSingleton<IImageConverter, ImageConverter>();
 
 builder.Services.AddTransient<GlobalErrorHandlerMiddleware>();
 builder.Services.AddTransient<RefreshTokenValidator>();

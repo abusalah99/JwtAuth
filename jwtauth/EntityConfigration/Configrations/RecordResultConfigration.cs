@@ -7,7 +7,9 @@ public class RecordResultConfigration : BaseConfigration<RecordResult>
         base.Configure(builder);
 
         builder.Property(e => e.Feedback).HasMaxLength(128);
-        builder.Property(e=> e.FilePath).HasMaxLength(128);
+
         builder.HasOne(e=>e.User).WithMany().HasForeignKey(e=>e.UserId);
+
+        builder.Property(e => e.CreatedAt).HasDefaultValue(DateTime.UtcNow).ValueGeneratedOnAdd();
     }
 }

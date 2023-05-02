@@ -8,7 +8,7 @@ public interface IUserUnitOfWork : IBaseUnitOfWork<User>
     Task<Token> Register(User user);
     Task<Token> Refresh(string refreshToken);
     Task Logout(string refreshToken);
-    Task<User> Update(User user,Guid id);
+    Task<User> Update(UserRequest user,Guid id);
     Task<Token> UpdatePassword(PasswordRequest password,Guid id);
 
 }

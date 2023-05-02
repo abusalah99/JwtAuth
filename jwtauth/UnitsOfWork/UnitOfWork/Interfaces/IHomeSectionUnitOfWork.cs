@@ -2,6 +2,6 @@
 
 public interface IHomeSectionUnitOfWork : IBaseSettingsUnitOfWork<HomeSection> 
 {
-    Task Create(SectionRequest request, string rootPath);
-    Task Update(SectionRequest request, string rootPath);
+    Task Create(SectionRequest request);
+    Task Update(SectionRequest request);
 }

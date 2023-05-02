@@ -1,4 +1,6 @@
-﻿namespace jwtauth;
+﻿using System.Threading;
+
+namespace jwtauth;
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {
@@ -29,4 +31,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
         return await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Token.Value == token);
     }
+    public async Task<IEnumerable<User>>? GetUsersCreatedToday()
+         => await dbSet.Where(e => e.CreatedAt.Date == DateTime.UtcNow.Date).ToListAsync();
+    
+
+    public async Task<IEnumerable<User>>? GetUsersCreatedAtMonth(int month , int year)
+        => await dbSet.Where(e => e.CreatedAt.Month== month && e.CreatedAt.Year == year).ToListAsync();
+
 }

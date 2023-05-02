@@ -10,7 +10,7 @@ public class LogoutController : BaseController<User>
             => _userUnitOfWork = userUnitOfWork;
 
     [HttpPost]
-    public async Task<IActionResult> Logout(Token refreshToken)
+    public async Task<IActionResult> Logout(Token? refreshToken)
     {
 
         string oldToken = Request.Cookies["RefreshToken"] ?? string.Empty;
