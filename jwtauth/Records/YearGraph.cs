@@ -22,7 +22,6 @@ public class YearGraph
         {
             return month switch
             {
-                0 => Year,
                 1 => January,
                 2 => February,
                 3 => March,
@@ -42,9 +41,6 @@ public class YearGraph
         {
             switch (month)
             {
-                case 0:
-                    Year = value;
-                    break;
                 case 1:
                     January = value;
                     break;
