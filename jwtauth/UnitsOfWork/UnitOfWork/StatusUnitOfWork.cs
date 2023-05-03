@@ -11,17 +11,17 @@ public class StatusUnitOfWork : IStatusUnitOfWork
         _recordResultRepository = recordResultRepository;
     }
 
-    public async Task<Status> GetStatus()
+    public async Task<Status> GetStatus(int year)
     {
         int numberOfRecordsCreatedToday = GetListCount(await _recordResultRepository.GetRecordsCreatedToday());
 
         int numberOfUsersCreatedToday = GetListCount(await _userRepository.GetUsersCreatedToday());
 
         YearGraph userYearGraph = new();
-        userYearGraph = await CalculateGraph(userYearGraph, _userRepository.GetUsersCreatedAtMonth);
+        userYearGraph = await CalculateGraph(userYearGraph, year, _userRepository.GetUsersCreatedAtMonth);
 
         YearGraph recordsYearGraph = new();
-        recordsYearGraph = await CalculateGraph(recordsYearGraph, _recordResultRepository.GetRecordsCreatedAtMonth);
+        recordsYearGraph = await CalculateGraph(recordsYearGraph, year, _recordResultRepository.GetRecordsCreatedAtMonth);
 
         Status status = new()
         {
@@ -35,12 +35,12 @@ public class StatusUnitOfWork : IStatusUnitOfWork
     }
 
     private static async Task<YearGraph> CalculateGraph<T>
-        (YearGraph graph, Func<int, int, Task<IEnumerable<T>>> GetListCreatedAtMonth)
+        (YearGraph graph, int year, Func<int, int, Task<IEnumerable<T>>> GetListCreatedAtMonth)
     {
-        graph.Year = DateTime.Now.Year;
+        graph.Year = year;
 
         for(int i = 1; i <= 12;  i++)
-            graph[i] = GetListCount(await GetListCreatedAtMonth(i , DateTime.Now.Year));
+            graph[i] = GetListCount(await GetListCreatedAtMonth(i , year));
         
         return graph;   
     }

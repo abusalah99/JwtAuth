@@ -2,5 +2,5 @@
 
 public interface IStatusUnitOfWork
 {
-    Task<Status> GetStatus();
+    Task<Status> GetStatus(int year);
 }

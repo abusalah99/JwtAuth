@@ -56,7 +56,8 @@ public class BaseController<TEntity> : ControllerBase
         , new CookieOptions()
         {
             HttpOnly = true,
-            Expires = expireTime
+            Expires = expireTime,
+            SameSite = SameSiteMode.None,
         });
     protected Guid GetUserId()
     => new(User.FindFirst("Id")?.Value);

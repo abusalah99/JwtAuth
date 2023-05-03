@@ -12,7 +12,7 @@ public class ValuesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        Status status = await _UnitOfWork.GetStatus();
+        Status status = await _UnitOfWork.GetStatus(DateTime.UtcNow.Year);
 
         ResponseResult<Status> response = new(status);
 

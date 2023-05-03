@@ -9,7 +9,5 @@ public class RecordResultConfigration : BaseConfigration<RecordResult>
         builder.Property(e => e.Feedback).HasMaxLength(128);
 
         builder.HasOne(e=>e.User).WithMany().HasForeignKey(e=>e.UserId);
-
-        builder.Property(e => e.CreatedAt).HasDefaultValue(DateTime.UtcNow).ValueGeneratedOnAdd();
     }
 }
