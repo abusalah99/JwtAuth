@@ -132,6 +132,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     public async Task<Token> Register(User user)
     {
         user.Token = CreateNewRefreshToken();
+        user.CreatedAt = DateTime.UtcNow;
 
         await this.Create(user);
 

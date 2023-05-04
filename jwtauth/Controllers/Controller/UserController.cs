@@ -18,7 +18,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPut, Authorize]
-    public async Task<IActionResult> Put(UserRequest requestUser)
+    public async Task<IActionResult> Put([FromForm] UserRequest requestUser)
     {
         Guid id = GetUserId();
 
@@ -31,7 +31,7 @@ public class UserController : BaseController<User>
     }
 
     [HttpPut , Route("updatepassword"), Authorize]
-    public async Task<IActionResult> Put(PasswordRequest requestUser)
+    public async Task<IActionResult> Put( PasswordRequest requestUser)
     {
         Guid id = GetUserId();
 
