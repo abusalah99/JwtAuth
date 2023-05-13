@@ -6,6 +6,7 @@ public class RefreshToken : BaseEntity
     public required DateTime ExpireAt { get; set; }
     [JsonIgnore]
     public User User { get; set; }
+    [JsonIgnore]
     public Guid UserId { get; set; }
 }
  

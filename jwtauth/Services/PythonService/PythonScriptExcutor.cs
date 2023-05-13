@@ -3,13 +3,13 @@
 public class PythonScriptExcutor : IPythonScriptExcutor
 {
     public async Task<string> Excute(string rootPath, string scriptName,
-        string audioFile)
+        string audioFile, string model)
     {
         rootPath += @"\Services\PythonService\";
         string arguments = $"{rootPath + @"Scripts\" + scriptName} " +
-            $"{audioFile}";
+            $"{audioFile} " + $"{model}";
 
-        ProcessStartInfo start = new ProcessStartInfo()
+        ProcessStartInfo start = new ()
         {
             FileName = rootPath + @"Interpreter\python.exe",
             Arguments = arguments,

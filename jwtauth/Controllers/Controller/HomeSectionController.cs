@@ -2,34 +2,12 @@
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeSectionController : BaseSettingsController<HomeSection> 
+    public class HomeSectionController : BaseSettingsController<HomeSection>
     {
-        private readonly IHomeSectionUnitOfWork _unitOfWork;
-        public HomeSectionController(IHomeSectionUnitOfWork unitOfWork) 
-                 : base(unitOfWork) => _unitOfWork = unitOfWork;
+        public HomeSectionController(IHomeSectionUnitOfWork unitOfWork)
+                 : base(unitOfWork) { }
 
         [HttpGet]
-        public async Task<IActionResult> Get() =>await Read();
-
-        [HttpPost, Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Post([FromForm] SectionRequest homeSectionRequest)
-        {
-                await _unitOfWork.Create(homeSectionRequest);
-
-                ResponseResult<string> response = new("Home section created");
-                return Ok(response);
-        }
-
-        [HttpPut, Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Put([FromForm] SectionRequest homeSectionRequest)
-        {
-            await _unitOfWork.Update(homeSectionRequest);
-
-            ResponseResult<string> response = new("Home section updated");
-            return Ok(response);
-        }
-        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(Guid id)
-            => await Remove(id);
+        public async Task<IActionResult> Get() => await Read();
     }
 }

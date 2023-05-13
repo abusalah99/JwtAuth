@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c4b3b6f7-7e41-419a-ba76-6e87a8e61b1c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/jwtauth/Controllers/Base/BaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Controllers/Base/BaseController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Entities/Entity/OneTimePassword.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Entities/Entity/OneTimePassword.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Entities/Entity/RecordResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Entities/Entity/RecordResult.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Entities/Entity/RefreshToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Entities/Entity/RefreshToken.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Records/Status.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Records/Status.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Services/PythonService/IPythonScriptExcutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Services/PythonService/IPythonScriptExcutor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/Services/PythonService/PythonScriptExcutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/Services/PythonService/PythonScriptExcutor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jwtauth/UnitsOfWork/UnitOfWork/RecordResultUnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/jwtauth/UnitsOfWork/UnitOfWork/RecordResultUnitOfWork.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2PdfIDR6B31yl7nXBRVWHCgrgFG" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c4b3b6f7-7e41-419a-ba76-6e87a8e61b1c" name="Changes" comment="" />
+      <created>1683791801178</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1683791801178</updated>
+    </task>
+    <servers />
+  </component>
+</project>

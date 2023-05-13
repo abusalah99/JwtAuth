@@ -7,9 +7,6 @@ public class LoginController : BaseController<User>
     private readonly IUserUnitOfWork _userUnitOfWork;
     public LoginController(IUserUnitOfWork userUnitOfWork) : base(userUnitOfWork)
             => _userUnitOfWork = userUnitOfWork;
-    
-    [HttpGet]
-    public async Task<IActionResult> Get() => await Read();
 
     [HttpPost]
     public async Task<IActionResult> Login(LoginRequest request)

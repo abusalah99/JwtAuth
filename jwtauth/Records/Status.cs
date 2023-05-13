@@ -7,3 +7,4 @@ public class Status
     public YearGraph UsersYearGraph { get; set; }   
     public YearGraph RecordsYearGraph { get; set; }
 }
+

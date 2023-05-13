@@ -21,13 +21,19 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
             throw new ArgumentException("Please send wav file");
 
         string audioFilePath = rootPath + @"\Services\PythonService\" + formFile.FileName;
+        string modelPath = rootPath + @"\Services\PythonService\AiModels\MotorFaultsDiagnosis.h5";
         await _FileSaver.Save(formFile, audioFilePath );
 
-        string scriptResult = await _scriptExcuter.Excute(rootPath, "MfccScrpit.py", audioFilePath);
+        string scriptResult = await _scriptExcuter.Excute(rootPath,
+            "MfccScrpit.py", audioFilePath, modelPath);
+
+        byte[] Pdf = await File.ReadAllBytesAsync(rootPath 
+            + @"\Resources\Results\" + scriptResult + ".pdf");
 
         IRecordResult result = ResultFactory.GetResult(scriptResult);
 
         RecordResult recordResult = result.GetResult(userId);
+        recordResult.Pdf = Pdf; 
 
         await Create(recordResult); 
     }
