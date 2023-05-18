@@ -4,7 +4,6 @@ global using Microsoft.EntityFrameworkCore.ValueGeneration;
 global using Microsoft.EntityFrameworkCore.Storage;
 
 global using Microsoft.AspNetCore.Mvc;
-global using Microsoft.AspNetCore.Cors;
 global using Microsoft.AspNetCore.Authorization;
 
 global using System.Text;
@@ -27,5 +26,3 @@ global using Microsoft.IdentityModel.Tokens;
 global using Microsoft.Extensions.Options;
 
 global using System.Security.Claims;
-
-global using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
