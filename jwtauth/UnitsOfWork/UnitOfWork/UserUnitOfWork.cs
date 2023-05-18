@@ -23,10 +23,6 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         _jwtAccessOptions = jwtAccessOptions.Value;
         _imageConverter = converter;
     }
-
-    public virtual async Task<User> GetUserByMail(string mail)
-        => await _userRepository.GetByMail(mail);
-
     public override async Task Create(User user)
     {
         User? userFromDb = await GetUserByMail(user.Email);
@@ -43,24 +39,24 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     }
 
-    public async Task<User> Update(UserRequest requestUser, Guid id)
+    public async Task<User> Update(UserRequest userRequest, Guid id)
     {
         User? userFromDb = await _userRepository.Get(id);
         if (userFromDb == null)
             throw new ArgumentException("invaild Token");
-
-        string extention = Path.GetExtension(requestUser.UserImage.FileName);        
-        byte[] image = await _imageConverter.ConvertImage(requestUser.UserImage);
+        if()
+        string extention = Path.GetExtension(userRequest.UserImage.FileName);        
+        byte[] image = await _imageConverter.ConvertImage(userRequest.UserImage);
 
         User user = new()
         {
             Id = userFromDb.Id,
-            FristName = requestUser.FristName,
-            LastName = requestUser.LastName,
+            FristName = userRequest.FristName,
+            LastName = userRequest.LastName,
             Password = userFromDb.Password,
-            Email = requestUser.Email,
-            Age = requestUser.Age,
-            Phone = requestUser.Phone,
+            Email = userRequest.Email,
+            Age = userRequest.Age,
+            Phone = userRequest.Phone,
             Token = userFromDb.Token,
             Role = userFromDb.Role,
             ImageExtention = extention,
@@ -71,8 +67,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
         return user;
     }
-
-    public async Task DeleteUserByMail(string mail) => await _userRepository.DeleteByMail(mail);
+    public Task<User> GetUserByMail(string mail) => _userRepository.GetByMail(mail);
 
     public async Task<Token> Login(LoginRequest request)
     {
@@ -153,7 +148,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         User userFromDb = await _userRepository.Get(id);
 
         if (userFromDb == null)
-            throw new ArgumentException("User not found");
+            throw new ArgumentException("Invalid Token");
         if (!BCrypt.Net.BCrypt.Verify(password.Password, userFromDb.Password))
             throw new ArgumentException("wrong password");
 
@@ -192,5 +187,6 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     };
 
         return newRefreshToken;
-    } 
+    }
+
 }

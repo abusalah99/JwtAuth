@@ -3,7 +3,6 @@
 public interface IUserUnitOfWork : IBaseUnitOfWork<User>
     {
     Task<User> GetUserByMail(string mail);
-    Task DeleteUserByMail(string mail);
     Task<Token> Login(LoginRequest request);
     Task<Token> Register(User user);
     Task<Token> Refresh(string refreshToken);

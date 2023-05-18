@@ -25,15 +25,20 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<User>? GetByToken(string token)
     {
         if (token == null)
-            throw new ArgumentException("Invalid Token");
+            throw new ArgumentException("Token was not provided");
 
         return await dbSet.Include(e => e.Token).FirstOrDefaultAsync(e => e.Token.Value == token);
     }
     public async Task<IEnumerable<User>>? GetUsersCreatedToday()
          => await dbSet.Where(e => e.CreatedAt.Date == DateTime.UtcNow.Date).ToListAsync();
     
-
     public async Task<IEnumerable<User>>? GetUsersCreatedAtMonth(int month , int year)
         => await dbSet.Where(e => e.CreatedAt.Month== month && e.CreatedAt.Year == year).ToListAsync();
+
+    public override async Task Update(User entity)
+    { 
+        await Task.Run(() => dbSet.Update(entity));
+        await SaveChangesAsync();
+    }
 
 }

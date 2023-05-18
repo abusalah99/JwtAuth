@@ -4,11 +4,6 @@ public static class DependencyInjectionService
 {
     public static void AddDependencyInjectionService(this IServiceCollection services)
     {
-        services.AddSingleton(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-        services.AddSingleton(typeof(IBaseRepositiorySettings<>), typeof(BaseRepositiorySettings<>));
-        services.AddSingleton(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
-        services.AddSingleton(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSettingsUnitOfWork<>));
-
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
 
@@ -21,6 +16,11 @@ public static class DependencyInjectionService
         services.AddScoped<IRecordResultUnitOfWork, RecordResultUnitOfWork>();
 
         services.AddScoped<IStatusUnitOfWork, StatusUnitOfWork>();
+
+        services.AddSingleton(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddSingleton(typeof(IBaseRepositiorySettings<>), typeof(BaseRepositiorySettings<>));
+        services.AddSingleton(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
+        services.AddSingleton(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSettingsUnitOfWork<>));
 
         services.AddSingleton<IPythonScriptExcutor, PythonScriptExcutor>();
 
@@ -40,6 +40,5 @@ public static class DependencyInjectionService
         services.AddTransient<GlobalErrorHandlerMiddleware>();
         services.AddTransient<TransactionRollbackMiddleware>();
         services.AddTransient<CorsMiddleware>();
-
     }
 }
