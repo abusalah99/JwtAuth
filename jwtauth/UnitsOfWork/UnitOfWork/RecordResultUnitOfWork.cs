@@ -6,8 +6,7 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
     private readonly IFileSaver _FileSaver;
     private readonly IRecordResultRepository _recordResultRepository;
     public RecordResultUnitOfWork(IRecordResultRepository repository,
-        ILogger<RecordResultUnitOfWork> logger, IPythonScriptExcutor modelExcutor,
-        IFileSaver fileSaver): base(repository, logger)
+         IPythonScriptExcutor modelExcutor, IFileSaver fileSaver): base(repository)
     {
         _scriptExcuter = modelExcutor;
         _FileSaver = fileSaver;

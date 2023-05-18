@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 
 public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 {
     private readonly IUserRepository _userRepository;
-    private readonly ILogger<UserUnitOfWork> _logger;
     private readonly IJwtProvider _jwtProvider;
     private readonly RefreshTokenValidator _refreshTokenValidator;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -13,14 +10,11 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     private readonly JwtAccessOptions _jwtAccessOptions;
     private readonly IImageConverter _imageConverter;
 
-    public UserUnitOfWork(IUserRepository repository, ILogger<UserUnitOfWork> logger,
-        IJwtProvider jwtProvider, RefreshTokenValidator refreshTokenValidator,
-        IRefreshTokenRepository refreshTokenRepository,
-        IOptions<JwtRefreshOptions> jwtRefreshOptions, 
-        IOptions<JwtAccessOptions> jwtAccessOptions,
-        IImageConverter converter) : base(repository, logger)
+    public UserUnitOfWork(IUserRepository repository, IJwtProvider jwtProvider
+        , RefreshTokenValidator refreshTokenValidator, IRefreshTokenRepository refreshTokenRepository,
+        IOptions<JwtRefreshOptions> jwtRefreshOptions, IOptions<JwtAccessOptions> jwtAccessOptions,
+        IImageConverter converter) : base(repository)
     {
-        _logger = logger;
         _userRepository = repository;
         _jwtProvider = jwtProvider;
         _refreshTokenValidator = refreshTokenValidator;
@@ -35,9 +29,6 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     public override async Task Create(User user)
     {
-        if (user == null)
-            throw new ArgumentNullException("user was not provided.");
-
         User? userFromDb = await GetUserByMail(user.Email);
         if (userFromDb != null)
             throw new ArgumentException("this mail is already used");
@@ -54,9 +45,6 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     public async Task<User> Update(UserRequest requestUser, Guid id)
     {
-        if (requestUser == null)
-            throw new ArgumentNullException("user was not provided.");
-
         User? userFromDb = await _userRepository.Get(id);
         if (userFromDb == null)
             throw new ArgumentException("invaild Token");
@@ -84,21 +72,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         return user;
     }
 
-    public async Task DeleteUserByMail(string mail)
-    {
-        using IDbContextTransaction transaction = await _userRepository.GetTransaction();
-        try
-        {
-            await _userRepository.DeleteByMail(mail);
-        }
-        catch (Exception exception)
-        {
-            transaction.Rollback();
-
-            _logger.LogError(exception.Message);
-        }
-        await transaction.CommitAsync();
-    }
+    public async Task DeleteUserByMail(string mail) => await _userRepository.DeleteByMail(mail);
 
     public async Task<Token> Login(LoginRequest request)
     {
@@ -151,7 +125,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     {
         User userFromDb = await _userRepository.GetByToken(refreshToken);
 
-        if (userFromDb == null)
+        if (userFromDb == null || !_refreshTokenValidator.Validate(refreshToken))
             throw new ArgumentException("Invalid Token");
 
         Token token = new()
@@ -168,21 +142,10 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
     public async Task Logout(string refreshToken)
     {
         User userFromDb = await _userRepository.GetByToken(refreshToken);
-        if (userFromDb == null)
+        if (userFromDb == null || !_refreshTokenValidator.Validate(refreshToken))
             throw new ArgumentException("Invalid Token");
 
-        using IDbContextTransaction transaction = await _refreshTokenRepository.GetTransaction();
-        try
-        {
-            await _refreshTokenRepository.Remove(userFromDb.Token.Id);
-        }
-        catch (Exception exception)
-        {
-            transaction.Rollback();
-
-            _logger.LogError(exception.Message);
-        }
-        await transaction.CommitAsync();
+        await _refreshTokenRepository.Remove(userFromDb.Token.Id);
     }
 
     public async Task<Token> UpdatePassword(PasswordRequest password, Guid id)

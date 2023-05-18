@@ -1,6 +1,5 @@
 ﻿namespace jwtauth.Controllers;
 
-[EnableCors("AllowAll")]
 public class BaseController<TEntity> : ControllerBase
     where TEntity : BaseEntity
 {

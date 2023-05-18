@@ -34,7 +34,8 @@ public class YearGraph
                 10 => October,
                 11 => November,
                 12 => December,
-                _ => throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12."),
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(month), "Month must be between 1 and 12."),
             };
         }
         set
@@ -78,7 +79,8 @@ public class YearGraph
                     December = value;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12.");
+                    throw new ArgumentOutOfRangeException(
+                        nameof(month), "Month must be between 1 and 12.");
             }
         }
     }

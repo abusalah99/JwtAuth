@@ -4,8 +4,7 @@ public class HomeSectionUnitOfWork : BaseSettingsUnitOfWork<HomeSection>, IHomeS
 {
     private readonly IImageConverter _converter;
     public HomeSectionUnitOfWork(IHomeSectionRepository repository,
-        ILogger<HomeSectionUnitOfWork> logger, IImageConverter converter)
-        : base(repository, logger) => _converter = converter;
+        IImageConverter converter) : base(repository) => _converter = converter;
 
     public async Task Create(SectionRequest request)
     {

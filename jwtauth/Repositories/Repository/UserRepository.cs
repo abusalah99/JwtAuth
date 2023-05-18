@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace jwtauth;
+﻿namespace jwtauth;
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {
