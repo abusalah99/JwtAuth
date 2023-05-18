@@ -6,15 +6,6 @@ builder.Services.AddControllers();
  
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"))
-               .EnableDetailedErrors()
-               .EnableSensitiveDataLogging()
-               .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-
-builder.Services.AddOptions();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
