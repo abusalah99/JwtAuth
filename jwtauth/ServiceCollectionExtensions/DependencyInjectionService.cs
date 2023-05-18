@@ -4,10 +4,10 @@ public static class DependencyInjectionService
 {
     public static void AddDependencyInjectionService(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-        services.AddScoped(typeof(IBaseRepositiorySettings<>), typeof(BaseRepositiorySettings<>));
-        services.AddScoped(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
-        services.AddScoped(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSettingsUnitOfWork<>));
+        services.AddSingleton(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddSingleton(typeof(IBaseRepositiorySettings<>), typeof(BaseRepositiorySettings<>));
+        services.AddSingleton(typeof(IBaseUnitOfWork<>), typeof(BaseUnitOfWork<>));
+        services.AddSingleton(typeof(IBaseSettingsUnitOfWork<>), typeof(BaseSettingsUnitOfWork<>));
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserUnitOfWork, UserUnitOfWork>();
@@ -35,9 +35,11 @@ public static class DependencyInjectionService
 
         services.AddSingleton<IImageConverter, ImageConverter>();
 
+        services.AddSingleton<RefreshTokenValidator>();
+
         services.AddTransient<GlobalErrorHandlerMiddleware>();
         services.AddTransient<TransactionRollbackMiddleware>();
         services.AddTransient<CorsMiddleware>();
-        services.AddTransient<RefreshTokenValidator>();
+
     }
 }
