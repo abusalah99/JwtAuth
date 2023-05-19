@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class JwtAccessOptions
+public record JwtAccessOptions
 {
     public  string? Issuser { get; init; } 
     public  string? Audience { get; init; }

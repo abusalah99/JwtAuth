@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class Token
+public record Token
 {
     public string? AccessToken { get; set; }
     public DateTime AccessTokenExpiresAt { get; set; }

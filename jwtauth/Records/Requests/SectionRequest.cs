@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class SectionRequest
+public record SectionRequest
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }

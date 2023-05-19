@@ -44,24 +44,24 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
         User? userFromDb = await _userRepository.Get(id);
         if (userFromDb == null)
             throw new ArgumentException("invaild Token");
-        if()
-        string extention = Path.GetExtension(userRequest.UserImage.FileName);        
-        byte[] image = await _imageConverter.ConvertImage(userRequest.UserImage);
 
-        User user = new()
+        User user = new();
+
+        if (userRequest.UserImage != null)
         {
-            Id = userFromDb.Id,
-            FristName = userRequest.FristName,
-            LastName = userRequest.LastName,
-            Password = userFromDb.Password,
-            Email = userRequest.Email,
-            Age = userRequest.Age,
-            Phone = userRequest.Phone,
-            Token = userFromDb.Token,
-            Role = userFromDb.Role,
-            ImageExtention = extention,
-            UserImage = image,
-        };
+            user.ImageExtention = Path.GetExtension(userRequest.UserImage.FileName);
+            user.UserImage = await _imageConverter.ConvertImage(userRequest.UserImage);
+        }
+
+        user.Id = userFromDb.Id;
+        user.FristName = userRequest.FristName;
+        user.LastName = userRequest.LastName;
+        user.Password = userFromDb.Password;
+        user.Email = userRequest.Email;
+        user.Age = userRequest.Age;
+        user.Phone = userRequest.Phone;
+        user.Token = userFromDb.Token;
+        user.Role = userFromDb.Role;
 
         await Update(user);
 
@@ -80,12 +80,16 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
             throw new ArgumentException("wrong password");
 
         if (userFromDb.Token == null)
+        {
             userFromDb.Token = CreateNewRefreshToken(userFromDb.Id);
+            await Update(userFromDb);
+        }
 
-        if(!_refreshTokenValidator.Validate(userFromDb.Token.Value))
+        if (!_refreshTokenValidator.Validate(userFromDb.Token.Value))
+        {
             userFromDb.Token = CreateNewRefreshToken(userFromDb.Id, userFromDb.Token.Id);
-
-        await Update(userFromDb);    
+            await Update(userFromDb);
+        }
 
         Token token = new()
         {
@@ -118,7 +122,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     public async Task<Token> Refresh(string refreshToken)
     {
-        User userFromDb = await _userRepository.GetByToken(refreshToken);
+        User? userFromDb = await _userRepository.GetByToken(refreshToken);
 
         if (userFromDb == null || !_refreshTokenValidator.Validate(refreshToken))
             throw new ArgumentException("Invalid Token");
@@ -136,7 +140,8 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
     public async Task Logout(string refreshToken)
     {
-        User userFromDb = await _userRepository.GetByToken(refreshToken);
+        User? userFromDb = await _userRepository.GetByToken(refreshToken);
+
         if (userFromDb == null || !_refreshTokenValidator.Validate(refreshToken))
             throw new ArgumentException("Invalid Token");
 
@@ -149,6 +154,7 @@ public class UserUnitOfWork : BaseUnitOfWork<User>, IUserUnitOfWork
 
         if (userFromDb == null)
             throw new ArgumentException("Invalid Token");
+
         if (!BCrypt.Net.BCrypt.Verify(password.Password, userFromDb.Password))
             throw new ArgumentException("wrong password");
 

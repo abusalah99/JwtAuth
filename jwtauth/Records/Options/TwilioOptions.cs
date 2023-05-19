@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class TwilioOptions
+public record TwilioOptions
 {
     public string? AccountSID { get; set; } 
     public string? AuthToken { get; set; }

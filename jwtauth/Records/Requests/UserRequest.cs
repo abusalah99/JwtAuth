@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class UserRequest
+public record UserRequest
 {
     public Guid Id { get; set; }
     public required string Email { get; set; }

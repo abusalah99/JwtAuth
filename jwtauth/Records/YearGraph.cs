@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class YearGraph
+public record YearGraph
 {
     public int Year { get; set; }
     public int January { get; set; }

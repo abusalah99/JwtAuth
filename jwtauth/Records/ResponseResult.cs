@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class ResponseResult<TEntity> 
+public record ResponseResult<TEntity> 
 {
     public bool Status { get; private set; }
     public int ErrorNumber { get; private set; }
@@ -15,7 +15,7 @@ public class ResponseResult<TEntity>
    
 }
 
-public class ResponseResult
+public record ResponseResult
 {
     public bool Status { get; private set; }
     public int ErrorNumber { get; private set; }

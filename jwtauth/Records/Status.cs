@@ -1,6 +1,6 @@
 ﻿namespace jwtauth;
 
-public class Status
+public record Status
 {
     public int NumberOfRcordsCreatedToday { get; set; }
     public int NumberOfUsersCreatedToday { get; set; }
