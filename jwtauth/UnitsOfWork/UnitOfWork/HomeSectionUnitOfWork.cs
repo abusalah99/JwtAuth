@@ -1,55 +1,87 @@
-﻿namespace jwtauth;
+﻿using Microsoft.VisualBasic;
+
+namespace jwtauth;
 
 public class HomeSectionUnitOfWork : BaseSettingsUnitOfWork<HomeSection>, IHomeSectionUnitOfWork
 {
     private readonly IImageConverter _converter;
+    private readonly ICloud _cloud;
     public HomeSectionUnitOfWork(IHomeSectionRepository repository,
-        IImageConverter converter) : base(repository) => _converter = converter;
+        IImageConverter converter , ICloud cloud) : base(repository)
+    {
+        _converter = converter;
+        _cloud = cloud; 
+    }
+
 
     public async Task Create(SectionRequest request)
     {
-        var sectionFromDb = await Search(request.Name);
-
-        if (sectionFromDb.Any())
-            throw new ArgumentException("This name is already used");
+        await CheckSectionNameIsUniqueAsync(request.Name);
 
         if (request.Image == null)
             throw new ArgumentException("Image was not supplied");
-
-           string extension =  Path.GetExtension(request.Image.FileName);
 
         byte[] image = await _converter.ConvertImage(request.Image);
 
         HomeSection homeSection = new()
         {
             Name = request.Name,
-            Image = image,
             SectionText = request.SectionText,
-            Extention = extension
+            ImageId = await _cloud.UploadFile($"{request.Name}.jpg", image)
         };
 
         await Create(homeSection);
+    }
+
+    public async Task<IEnumerable<HomeSectionResponse>> ReadSectionsResponse()
+    {
+        List<HomeSectionResponse> responses = new();
+        HomeSectionResponse response = new();
+
+        var SectionsFromDb = await Read();
+
+        foreach(HomeSection section in SectionsFromDb)
+        {
+            response.Id = section.Id;
+            response.SectionText = section.SectionText;
+            response.Name = section.Name;
+            response.ImageUrl = await _cloud.GetFileUrl($"{section.Name}.jpg");
+
+            responses.Append(response);
+        }
+
+        return responses;
     }
 
     public async Task Update(SectionRequest request)
     {
         HomeSection sectionFromDb = await Read(request.Id);
 
-        if (sectionFromDb == null) 
+        if (sectionFromDb == null)
             throw new ArgumentException("Section not found");
 
-        if (request.Image != null)
-        {
-            string extension = Path.GetExtension(request.Image.FileName);
+        if (request.Name != sectionFromDb.Name)
+            await CheckSectionNameIsUniqueAsync(request.Name);
 
-           byte[] image =  await _converter.ConvertImage(request.Image);
-
-            sectionFromDb.Image = image;
-            sectionFromDb.Extention = extension;    
-        }
         sectionFromDb.Name = request.Name;
         sectionFromDb.SectionText = request.SectionText;
-     
+
+        if (request.Image != null)
+        { 
+           byte[] image =  await _converter.ConvertImage(request.Image);
+
+            sectionFromDb.ImageId =
+                 await _cloud.UploadFile($"{sectionFromDb.Name}.jpg", image, sectionFromDb.ImageId);
+        }
+
         await Update(sectionFromDb);
+    }
+
+    private async Task CheckSectionNameIsUniqueAsync(string name)
+    {
+        var sectionsFromDb = await Search(name);
+
+        if (sectionsFromDb.Any())
+            throw new ArgumentException("This name is already used");
     }
 }

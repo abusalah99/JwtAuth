@@ -17,9 +17,9 @@ public class ResultController : BaseSettingsController<RecordResult>
     public async Task<IActionResult> Get()
     {
         Guid userId = GetUserId();
-        IEnumerable<RecordResult> records = await _unitOfWork.GetRecordsByUserId(userId);
+        IEnumerable<RecordResultResponse> records = await _unitOfWork.GetRecordsByUserId(userId);
 
-        ResponseResult<IEnumerable<RecordResult>> response = new(records);
+        ResponseResult<IEnumerable<RecordResultResponse>> response = new(records);
 
         return Ok(response);
     }

@@ -11,5 +11,7 @@ public static class OptionService
 
         services.ConfigureOptions<GmailSmtpOptionsSetup>();
         services.ConfigureOptions<TwilioOptionsSetup>();
+
+        services.ConfigureOptions<BackblazeOptionsSetup>();
     }
 }

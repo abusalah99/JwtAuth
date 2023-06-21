@@ -35,10 +35,4 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<IEnumerable<User>>? GetUsersCreatedAtMonth(int month , int year)
         => await dbSet.Where(e => e.CreatedAt.Month== month && e.CreatedAt.Year == year).ToListAsync();
 
-    public override async Task Update(User entity)
-    { 
-        await Task.Run(() => dbSet.Update(entity));
-        await SaveChangesAsync();
-    }
-
 }

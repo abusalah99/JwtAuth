@@ -8,9 +8,7 @@ public class HomeSectionConfigration : BaseConfigration<HomeSection>
 
         builder.Property(e => e.SectionText).IsRequired();
 
-        builder.Property(e => e.Extention).IsRequired();
-
-        builder.Property(e => e.Image).IsRequired();  
+        builder.Property(e => e.ImageId).IsRequired();  
 
         builder.HasIndex(e => e.Name).IsUnique();
     }

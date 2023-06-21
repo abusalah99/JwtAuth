@@ -6,6 +6,10 @@ public class ImageConverter : IImageConverter
     {
         MemoryStream byteImage = new ();
         await image.CopyToAsync (byteImage);
-        return byteImage.ToArray();
+        byte [] imageArray = byteImage.ToArray();
+
+        byteImage.Dispose();
+
+        return imageArray;
     }
 }

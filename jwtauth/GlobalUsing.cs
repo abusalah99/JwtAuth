@@ -19,6 +19,9 @@ global using System.Net.Mail;
 
 global using System.Net;
 
+global using B2Net.Models;
+global using B2Net;
+
 global using System.IdentityModel.Tokens.Jwt;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;

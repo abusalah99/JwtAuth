@@ -5,13 +5,17 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
     private readonly IPythonScriptExcutor _scriptExcuter;
     private readonly IFileSaver _FileSaver;
     private readonly IRecordResultRepository _recordResultRepository;
+    private readonly ICloud _cloud;
     public RecordResultUnitOfWork(IRecordResultRepository repository,
-         IPythonScriptExcutor modelExcutor, IFileSaver fileSaver) : base(repository)
+         IPythonScriptExcutor modelExcutor,
+        IFileSaver fileSaver, ICloud cloud) : base(repository)
     {
         _scriptExcuter = modelExcutor;
         _FileSaver = fileSaver;
         _recordResultRepository = repository;
+        _cloud = cloud;
     }
+
     public async Task Create(IFormFile formFile, string rootPath , Guid userId)
     {
         string extension = Path.GetExtension(formFile.FileName).ToLower();
@@ -31,8 +35,7 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
 
         IRecordResult result = ResultFactory.GetResult(scriptResult);
 
-        RecordResult recordResult = result.GetResult(userId);
-        recordResult.Pdf = Pdf; 
+        RecordResult recordResult = result.GetResult(userId); 
 
         await Create(recordResult); 
     }
@@ -46,6 +49,26 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
         
         await base.Update(resultFromDb);
     }
-    public async Task<IEnumerable<RecordResult>> GetRecordsByUserId(Guid id)
-                => await _recordResultRepository.GetByUserId(id);
+
+    public async Task<IEnumerable<RecordResultResponse>> GetRecordsByUserId(Guid id)
+    {
+        List<RecordResultResponse> responses = new();  
+        RecordResultResponse response = new();
+
+        var results =  await _recordResultRepository.GetByUserId(id);
+
+        foreach (RecordResult result in results) 
+        {
+            response.Feedback = result.Feedback;
+            response.Id = result.Id;    
+            response.Name = result.Name;
+            response.Rate = result.Rate;
+            response.PdfUrl = await _cloud.GetFileUrl($"{response.Name}.pdf");
+
+            responses.Append(response);
+        }
+
+        return responses;
+    }
+                 
 } 

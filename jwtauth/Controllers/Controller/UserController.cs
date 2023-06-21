@@ -14,7 +14,11 @@ public class UserController : BaseController<User>
     {
         Guid userId = GetUserId();
 
-        return await Read(userId);
+        UserResponse userResponse  = await _userUnitOfWork.ReadUserResponse(userId);
+
+        ResponseResult<UserResponse> response = new(userResponse);
+
+        return Ok(response);
     }
 
     [HttpPut, Authorize]
@@ -22,10 +26,10 @@ public class UserController : BaseController<User>
     {
         Guid id = GetUserId();
 
-        User user =  await _userUnitOfWork.Update(
+        UserResponse userResponse =  await _userUnitOfWork.Update(
             requestUser,id);
 
-        ResponseResult<User> response = new(user);
+        ResponseResult<UserResponse> response = new(userResponse);
 
         return Ok(response);
     }

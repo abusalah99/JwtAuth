@@ -26,6 +26,7 @@ public class HomeController : BaseSettingsController<HomeSection>
         ResponseResult<string> response = new("Home section updated");
         return Ok(response);
     }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
         => await Remove(id);
