@@ -6,6 +6,6 @@ public class HorizontalMisalignment : IRecordResult
     {
         UserId = userId,
         CreatedAt = DateTime.UtcNow.AddHours(2),
-        Name = "Horizontal Misalignment",
+        Name = "HorizontalMisalignment",
     };
 }

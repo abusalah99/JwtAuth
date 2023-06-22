@@ -30,9 +30,6 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
         string scriptResult = await _scriptExcuter.Excute(rootPath,
             "MfccScrpit.py", audioFilePath, modelPath);
 
-        byte[] Pdf = await File.ReadAllBytesAsync(rootPath 
-            + @"\Resources\Results\" + scriptResult + ".pdf");
-
         IRecordResult result = ResultFactory.GetResult(scriptResult);
 
         RecordResult recordResult = result.GetResult(userId); 
@@ -53,19 +50,20 @@ public class RecordResultUnitOfWork : BaseSettingsUnitOfWork<RecordResult>, IRec
     public async Task<IEnumerable<RecordResultResponse>> GetRecordsByUserId(Guid id)
     {
         List<RecordResultResponse> responses = new();  
-        RecordResultResponse response = new();
 
         var results =  await _recordResultRepository.GetByUserId(id);
 
         foreach (RecordResult result in results) 
         {
+            RecordResultResponse response = new();
+
             response.Feedback = result.Feedback;
             response.Id = result.Id;    
             response.Name = result.Name;
             response.Rate = result.Rate;
             response.PdfUrl = await _cloud.GetFileUrl($"{response.Name}.pdf");
 
-            responses.Append(response);
+            responses.Add(response);
         }
 
         return responses;

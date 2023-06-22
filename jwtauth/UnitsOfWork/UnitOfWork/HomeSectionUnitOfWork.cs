@@ -36,18 +36,19 @@ public class HomeSectionUnitOfWork : BaseSettingsUnitOfWork<HomeSection>, IHomeS
     public async Task<IEnumerable<HomeSectionResponse>> ReadSectionsResponse()
     {
         List<HomeSectionResponse> responses = new();
-        HomeSectionResponse response = new();
 
         var SectionsFromDb = await Read();
 
         foreach(HomeSection section in SectionsFromDb)
         {
+            HomeSectionResponse response = new();
+
             response.Id = section.Id;
             response.SectionText = section.SectionText;
             response.Name = section.Name;
             response.ImageUrl = await _cloud.GetFileUrl($"{section.Name}.jpg");
 
-            responses.Append(response);
+            responses.Add(response);
         }
 
         return responses;
